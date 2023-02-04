@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React from 'react'
 import Navbar from './Navbar'
 
@@ -49,7 +50,7 @@ const Header = () => {
                 <a href="#" className="dropdown-item">Feedback</a>
                 <div className="dropdown-divider"></div>
                 <a href="#" className="dropdown-item">Settings</a>
-                <a href="#" className="dropdown-item">Logout</a>
+                <Link href="/auth/signin" className="dropdown-item">Logout</Link>
               </div>
             </div>
           </div>

@@ -1,10 +1,20 @@
 import Main from '@/components/Layouts/Main'
+import { NextComponentType } from 'next'
 import type { AppProps } from 'next/app'
 
-export default function App({ Component, pageProps }: AppProps) {
-  return (
+interface MyPageProps {
+  Component: any
+  pageProps: NextComponentType
+}
+
+export default function App({ Component, pageProps }: MyPageProps) {
+  const getLayout = Component.getLayout || ((page: React.ReactNode) => (
     <Main>
-      <Component {...pageProps} />
+      {page}
     </Main>
+  ))
+
+  return getLayout(
+    <Component {...pageProps} />
   )
 }
