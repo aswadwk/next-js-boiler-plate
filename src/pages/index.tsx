@@ -1,8 +1,33 @@
 import Head from 'next/head'
 import { Inter } from '@next/font/google'
 import PageHeader from '@/components/Header/PageHeader'
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { asyncIsPreloadProcess } from '@/states/isPreload/action';
+import { useRouter } from 'next/router';
 
 export default function Home() {
+  const router = useRouter()
+  const {
+    authUser= null,
+    isPreload = false,
+  } = useSelector((states: any) => states);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(asyncIsPreloadProcess());
+  }, [dispatch]);
+
+  if (isPreload) {
+    return null;
+  }
+
+  if(!isPreload && authUser===null){
+    router.push('/auth/signin')
+  }
+
   return (
     <>
       <Head>
