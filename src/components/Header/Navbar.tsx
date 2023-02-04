@@ -28,7 +28,7 @@ const Navbar = () => {
                   </span>
                 </a>
                 <div className="dropdown-menu dropdown-menu-arrow">
-                  <a className="dropdown-item" href="./activity.html" >
+                  <a className="dropdown-item" href="/master/account-types" >
                     Tipe Akun
                   </a>
                   <a className="dropdown-item" href="./gallery.html" >
