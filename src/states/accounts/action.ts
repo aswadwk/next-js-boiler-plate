@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import api from '@/utils/api'
 import { hideLoading, showLoading } from 'react-redux-loading-bar'
 import { AppDispatch } from '..'
