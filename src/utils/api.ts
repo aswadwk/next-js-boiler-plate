@@ -98,6 +98,32 @@ const api = (() => {
     return accountTypes
   }
 
+  async function getAllAccountTypesWithPagination (params:any): Promise<any> {
+    console.log('params', params)
+    // delete item params when null
+    if (params.per_page === null) {
+      delete params.per_page
+    }
+
+    if(params.page === null) {
+      delete params.page
+    }
+
+    if(params.name === null) {
+      delete params.name
+    }
+
+    const a = Object.keys(params).map((key) => `${key}=${params[key]}`).join('&')
+
+    const response = await _fetchWithAuth(`${BASE_URL}account-types?${a}`, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    return await response.json()
+  }
+
   async function getAllAccounts (): Promise<any> {
     const response = await _fetchWithAuth(`${BASE_URL}accounts`, {
       headers: {
@@ -305,11 +331,12 @@ const api = (() => {
     createThread,
     getThreadDetail,
     getAllAccountTypes,
+    getAllAccountTypesWithPagination,
     addAccountType,
     getAllAccounts,
     addAccounts,
     getAllDivisions,
-    addDivision
+    addDivision,
   }
 })()
 
