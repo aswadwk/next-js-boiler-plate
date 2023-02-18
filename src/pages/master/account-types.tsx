@@ -1,12 +1,8 @@
 import PageHeader from '@/components/Header/PageHeader'
-import { asyncReceiveAccountTypes } from '@/states/accountTypes/action'
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { useSelector } from 'react-redux'
 import apiHelper from '@/utils/api';
-import Header from '@/components/Table/Header'
-import Footer from '@/components/Table/Footer'
-import ReactPaginate from 'react-paginate'
+import Header from '@/components/Table/TableHeader'
+import TableFooter from '@/components/Table/TableFooter'
 
 const AccountType = () => {
   const [accountTypes, setAccountTypes] = useState([]);
@@ -20,52 +16,48 @@ const AccountType = () => {
   const [to, setTo] = useState(10)
 
   useEffect(() => {
-    getAccountTypes({ page: currentPage, limit, search})
+    getAccountTypes({ page: currentPage, limit, search })
     console.log(search);
   }, [search, currentPage, page, limit])
 
 
-  async function getAccountTypes({ page, limit, search} : any) {
-    if(search === '') {
+  async function getAccountTypes({ page, limit, search }: any) {
+    if (search === '') {
       search = null
     }
 
-    const result = await apiHelper.getAllAccountTypesWithPagination({ page, per_page: limit, name: search});
+    const result = await apiHelper.getAllAccountTypesWithPagination({ page, per_page: limit, name: search });
 
     const { data, status } = result;
-    if(status){
+    if (status) {
       setAccountTypes(data.data);
       setTotalPage(data.last_page);
       setTotal(data.total);
       setFrom(data.from);
-      setTo(data.to);      
+      setTo(data.to);
     }
 
   }
 
-  function changePage({ selected }: any) {
-    setCurrentPage(selected + 1)
-    console.log(selected)
+  function onChangePage(e: any) {
+    setCurrentPage(e)
   }
 
-  function setSearchValue(e: any) {
-    setSearch(e.target.value)
+  function onSearch(q: any) {
+    setSearch(q)
     setCurrentPage(1)
     setPage(1)
   }
 
-  function changeLimit(e: any) {
-    setLimit(e.target.value)
+  function onChangeLimit(e: any) {
+    setLimit(e)
     setCurrentPage(1)
     setPage(1)
   }
-
-
 
   if (accountTypes.length === 0) {
     return null
   }
-
 
   return (
     <div className="page-wrapper">
@@ -75,37 +67,7 @@ const AccountType = () => {
           <div className="container-fluid">
             <div className="col-12 col-md-8">
               <div className="card">
-                {/* <Header /> */}
-                <div className="card-body border-bottom py-3">
-                  <div className="d-flex">
-                    <div className="text-muted">
-                      Show
-                      <div className="mx-2 d-inline-block">
-                        <input 
-                          type="text" 
-                          className="form-control form-control-sm" 
-                          size={3} 
-                          aria-label="Invoices count" 
-                          value={limit}
-                          onChange={(e) => changeLimit(e)}
-                        />
-                      </div>
-                      entries
-                    </div>
-                    <div className="ms-auto text-muted">
-                      Search:
-                      <div className="ms-2 d-inline-block">
-                        <input 
-                          type="text" 
-                          className="form-control form-control-sm" 
-                          aria-label="Search invoice" 
-                          value={search}
-                          onChange={(e) => setSearchValue(e)}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <Header onItemPerPage={onChangeLimit} onSearch={onSearch} />
               </div>
               <div className="table-responsive">
                 <table
@@ -144,27 +106,13 @@ const AccountType = () => {
                   </tbody>
                 </table>
               </div>
-              {/* <Footer /> */}
-
-              <div className="card-footer d-flex align-items-center">
-                <p className="m-0 text-muted">Showing <span>{from}</span> to <span>{to}</span> of <span>{total}</span> entries</p>
-                <ReactPaginate
-                  previousLabel={'< prev'}
-                  nextLabel={'next >'}
-                  breakLabel={'...'}
-                  pageCount={totalPage}
-                  onPageChange={changePage}
-                  containerClassName={'pagination m-0 ms-auto'}
-                  pageClassName={'page-item'}
-                  pageLinkClassName={'page-link'}
-                  activeClassName={'active'}
-                  previousClassName={'page-item'}
-                  nextClassName={'page-item'}
-                  previousLinkClassName={'page-link'}
-                  nextLinkClassName={'page-link'}
-                  disabledLinkClassName={'disabled'}
-                />
-              </div>
+              <TableFooter
+                from={from}
+                to={to}
+                total={total}
+                totalPage={totalPage}
+                changePage={onChangePage}
+              />
             </div>
           </div>
         </div>
