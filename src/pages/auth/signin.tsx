@@ -1,44 +1,43 @@
-import useInput from '@/hooks/useInput'
-import { NextComponentType } from 'next'
-import Link from 'next/link'
-import React, { useState } from 'react'
+import useInput from '@/hooks/useInput';
+import { NextComponentType } from 'next';
+import Link from 'next/link';
+import React from 'react';
 import { Button, notification, Form, Input } from 'antd';
 import { useRouter } from 'next/router';
-import {LoginOutlined} from '@ant-design/icons'
+import { LoginOutlined } from '@ant-design/icons';
 import apiHelper from '@/utils/api';
 
 const Signin = () => {
-  const router = useRouter()
+  const router = useRouter();
   const [api, contextHolder] = notification.useNotification();
-  const [loadings, setLoadings] = useState<boolean[]>([]);
-  const [email, setEmail] = useInput('')
-  const [password, setPassword] = useInput('')
+  const [email, setEmail] = useInput('');
+  const [password, setPassword] = useInput('');
   const [passwordVisible, setPasswordVisible] = React.useState(false);
 
-  const onFinish = async (values: any) => {
-    const result = await apiHelper.login({ email, password })
+  const onFinish = async () => {
+    const result = await apiHelper.login({ email, password });
 
-    const {status,message, data, errors} = result
+    const { status, message, data } = result;
 
-    if(!status){
-      api['error']({
+    if (!status) {
+      api.error({
         message: message,
         description:
           'Periksa kembali email dan password anda',
       });
 
-      return
+      return;
     }
 
-    api['error']({
+    api.error({
       message: message,
       description:
         'Periksa kembali email dan password anda',
     });
 
-    apiHelper.putAccessToken(data.access_token)
+    apiHelper.putAccessToken(data.access_token);
 
-    router.push('/')
+    router.push('/');
 
   };
 
@@ -85,13 +84,13 @@ const Signin = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-Signin.getLayout = function getLayout (page: NextComponentType) {
+Signin.getLayout = function getLayout(page: NextComponentType) {
   return (
     page
-  )
-}
+  );
+};
   
-export default Signin
+export default Signin;

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const Journal = () => {
   return (
@@ -12,7 +12,7 @@ const Journal = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Journal
+export default Journal;

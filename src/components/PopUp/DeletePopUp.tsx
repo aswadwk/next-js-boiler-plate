@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { Popconfirm } from 'antd';
 
 const DeletePopUp = ({ text, description, onDelete }: any) => {
@@ -36,7 +36,7 @@ const DeletePopUp = ({ text, description, onDelete }: any) => {
         className='text-danger'
         onClick={showPopconfirm}>Delete</a>
     </Popconfirm>
-  )
-}
+  );
+};
 
-export default DeletePopUp
+export default DeletePopUp;

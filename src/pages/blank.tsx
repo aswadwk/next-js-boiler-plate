@@ -1,8 +1,7 @@
-import PageHeader from '@/components/Header/PageHeader'
-import { Button } from 'antd'
-import React from 'react'
+import { Button } from 'antd';
+import React from 'react';
 import type { DatePickerProps } from 'antd';
-import { DatePicker, Space } from 'antd';
+import { DatePicker } from 'antd';
 
 const Blank = () => {
   const onChange: DatePickerProps['onChange'] = (date, dateString) => {
@@ -21,7 +20,7 @@ const Blank = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Blank
+export default Blank;

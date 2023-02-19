@@ -1,6 +1,6 @@
-import Head from 'next/head'
-import { Inter } from '@next/font/google'
-import PageHeader from '@/components/Header/PageHeader'
+import Head from 'next/head';
+// import { Inter } from '@next/font/google';
+import PageHeader from '@/components/Header/PageHeader';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
@@ -8,9 +8,9 @@ import { asyncIsPreloadProcess } from '@/states/isPreload/action';
 import { useRouter } from 'next/router';
 
 export default function Home() {
-  const router = useRouter()
+  const router = useRouter();
   const {
-    authUser= null,
+    authUser = null,
     isPreload = false,
   } = useSelector((states: any) => states);
 
@@ -24,8 +24,8 @@ export default function Home() {
     return null;
   }
 
-  if(!isPreload && authUser===null){
-    router.push('/auth/signin')
+  if (!isPreload && authUser === null) {
+    router.push('/auth/signin');
   }
 
   return (
@@ -160,5 +160,5 @@ export default function Home() {
         </div>
       </div>
     </>
-  )
+  );
 }

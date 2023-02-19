@@ -1,41 +1,41 @@
-import React, { useEffect, useState } from 'react'
-import { MinusOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
+import React, { useEffect, useState } from 'react';
+import { MinusOutlined } from '@ant-design/icons';
 import type { DatePickerProps } from 'antd';
-import { DatePicker, Input, Button, Form, Space } from 'antd';
+import { DatePicker, Input, Button } from 'antd';
 import SelectSearch from '@/components/Elements/Select';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { asyncAddAccount, asyncReceiveAccounts } from '@/states/accounts/action';
+import { asyncReceiveAccounts } from '@/states/accounts/action';
 import { useRouter } from 'next/router';
 import { asyncIsPreloadProcess } from '@/states/isPreload/action';
 
 const AddJournal = () => {
-  const router = useRouter()
+  const router = useRouter();
 
   const {
-    authUser= null,
+    authUser = null,
     isPreload = false,
-    accountsState = []
-  }: any = useSelector((states) => states)
+    accountsState = [],
+  }: any = useSelector((states) => states);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(asyncIsPreloadProcess());
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(asyncReceiveAccounts())
-  }, [dispatch])
+    dispatch(asyncReceiveAccounts());
+  }, [dispatch]);
   
   const [rows, setRows] = useState([
-    0, 1
+    0, 1,
   ]);
-  const [dateJournal, setDateJournal] = useState('')
+  const [dateJournal, setDateJournal] = useState('');
   const [account, setAccount] = useState([]);
-  const [debet, setDebet] = useState([,])
-  const [credit, setCredit] = useState([0,0])
-  const [amountDebet, setAmountDebet]= useState(0)
+  const [debet, setDebet] = useState([,]);
+  const [credit, setCredit] = useState([0, 0]);
+  const [amountDebet, setAmountDebet] = useState(0);
 
   const handleChangeDebet = (event: any, index: number) => {
     const reg = /^-?\d*(\.\d*)?$/;
@@ -46,9 +46,9 @@ const AddJournal = () => {
     }
     let amountC = 0;
     newDebet.map((x: any)=>{
-      amountC += parseInt(x)
-    })
-    setAmountDebet(amountC)
+      amountC += parseInt(x);
+    });
+    setAmountDebet(amountC);
     setDebet(newDebet);
   };
 
@@ -68,34 +68,34 @@ const AddJournal = () => {
 
   const deleteRow = (index: number) => {
     if (rows.length > 2) {
-      setAccount(account.filter((row, i) => i !== index))
-      setCredit(credit.filter((row, i) => i !== index))
-      setDebet(debet.filter((row, i) => i !== index))
-      setRows(rows.filter((row, i) => i !== index))
+      setAccount(account.filter((row, i) => i !== index));
+      setCredit(credit.filter((row, i) => i !== index));
+      setDebet(debet.filter((row, i) => i !== index));
+      setRows(rows.filter((row, i) => i !== index));
     }
   };
 
   const onChange: DatePickerProps['onChange'] = (date, dateString) => {
     console.log(date, dateString);
-    setDateJournal(dateString)
+    setDateJournal(dateString);
   };
 
   const handleAccountChange = (value: any, index: number) => {
     const newAccount: any = [...account];
     newAccount[index] = value;
     setAccount(newAccount);
-    if(Math.max(...rows)===index){
-      addRow()
+    if (Math.max(...rows) === index) {
+      addRow();
     }
   };
 
 
   function handleSubmit(event: any) {
-    event.preventDefault()
-    console.log(debet)
-    console.log(credit)
-    console.log(dateJournal)
-    console.log(account)
+    event.preventDefault();
+    console.log(debet);
+    console.log(credit);
+    console.log(dateJournal);
+    console.log(account);
   }
 
 
@@ -103,8 +103,8 @@ const AddJournal = () => {
     return null;
   }
 
-  if(!isPreload && authUser===null){
-    router.push('/auth/signin')
+  if (!isPreload && authUser === null) {
+    router.push('/auth/signin');
   }
 
 
@@ -196,7 +196,7 @@ const AddJournal = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AddJournal
+export default AddJournal;

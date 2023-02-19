@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import { Button, Modal } from 'antd';
 import AccountTypeInput from '../Form/AccountTypeInput';
 
-const AccountTypeModal = ({ type, onProcessSuccess }: any): any => {
+const AccountTypeModal = ({ onProcessSuccess }: any): any => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const [modalType, setModalType] = useState(type);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -22,7 +20,7 @@ const AccountTypeModal = ({ type, onProcessSuccess }: any): any => {
   return (
     <>
       <Button type="primary" onClick={showModal}>
-        {modalType === 'accountType' ? 'Create New' : 'Create New'}
+        Create New
       </Button>
       <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <AccountTypeInput onProcessSuccess={onProcessSuccess} onOk={handleOk} />

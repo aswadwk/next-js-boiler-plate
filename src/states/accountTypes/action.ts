@@ -1,58 +1,58 @@
-import api from '@/utils/api'
-import { hideLoading, showLoading } from 'react-redux-loading-bar'
-import { AppDispatch } from '..'
+import api from '@/utils/api';
+import { hideLoading, showLoading } from 'react-redux-loading-bar';
+import { AppDispatch } from '..';
 
 const ActionType = {
   RECEIVE_ACCOUNT_TYPES: 'RECEIVE_ACCOUNT_TYPES',
-  ADD_ACCOUNT_TYPE: 'ADD_ACCOUNT_TYPE'
-}
+  ADD_ACCOUNT_TYPE: 'ADD_ACCOUNT_TYPE',
+};
 
-function receiveAccountTypesActionCreator (accountTypes: []): any {
+function receiveAccountTypesActionCreator(accountTypes: []): any {
   return {
     type: ActionType.RECEIVE_ACCOUNT_TYPES,
     payload: {
-      accountTypes
-    }
-  }
+      accountTypes,
+    },
+  };
 }
 
-function addAccountTypesActionCreator (accountType: any): any {
-  console.log(accountType)
+function addAccountTypesActionCreator(accountType: any): any {
+  console.log(accountType);
   return {
     type: ActionType.ADD_ACCOUNT_TYPE,
     payload: {
-      accountType
-    }
-  }
+      accountType,
+    },
+  };
 }
 
-function asyncReceiveAccountTypes (): any {
+function asyncReceiveAccountTypes(): any {
   return async (dispatch: AppDispatch) => {
-    dispatch(showLoading())
+    dispatch(showLoading());
     try {
-      const accountTypes = await api.getAllAccountTypes()
-      dispatch(receiveAccountTypesActionCreator(accountTypes))
+      const accountTypes = await api.getAllAccountTypes();
+      dispatch(receiveAccountTypesActionCreator(accountTypes));
     } catch (error: any) {
-      alert(error.message)
+      alert(error.message);
     }
 
-    dispatch(hideLoading())
-  }
+    dispatch(hideLoading());
+  };
 }
 
-function asyncAddAccountType ({ name, code, positionNormal, description }: any): any {
+function asyncAddAccountType({ name, code, positionNormal, description }: any): any {
   return async (dispatch: AppDispatch) => {
-    dispatch(showLoading())
+    dispatch(showLoading());
     try {
-      const accountTypes = await api.addAccountType({ name, code, positionNormal, description })
+      const accountTypes = await api.addAccountType({ name, code, positionNormal, description });
 
-      dispatch(addAccountTypesActionCreator(accountTypes))
+      dispatch(addAccountTypesActionCreator(accountTypes));
     } catch (error: any) {
-      alert(error.message)
+      alert(error.message);
     }
 
-    dispatch(hideLoading())
-  }
+    dispatch(hideLoading());
+  };
 }
 
 export {
@@ -60,5 +60,5 @@ export {
   asyncReceiveAccountTypes,
   receiveAccountTypesActionCreator,
   asyncAddAccountType,
-  addAccountTypesActionCreator
-}
+  addAccountTypesActionCreator,
+};

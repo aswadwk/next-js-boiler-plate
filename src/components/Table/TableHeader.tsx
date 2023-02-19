@@ -1,18 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
 const TableHeader = ({ onSearch, onItemPerPage }: any) => {
   console.log(onSearch);
-  const [search, setSearch] = useState('')
-  const [itemPerPage, setItemPerPage] = useState(10)
+  const [search, setSearch] = useState('');
+  const [itemPerPage, setItemPerPage] = useState(10);
 
   function setSearchValue(e: any) {
-    setSearch(e.target.value)
-    onSearch(e.target.value)
+    setSearch(e.target.value);
+    onSearch(e.target.value);
   }
 
   function setItemPerPageValue(e: any) {
-    setItemPerPage(e.target.value)
-    onItemPerPage(e.target.value)
+    setItemPerPage(e.target.value);
+    onItemPerPage(e.target.value);
   }
 
   return (
@@ -47,7 +47,7 @@ const TableHeader = ({ onSearch, onItemPerPage }: any) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default TableHeader
+export default TableHeader;

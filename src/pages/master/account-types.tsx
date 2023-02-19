@@ -1,32 +1,27 @@
-import PageHeader from '@/components/Header/PageHeader'
-import React, { useEffect, useState } from 'react'
+import PageHeader from '@/components/Header/PageHeader';
+import React, { useEffect, useState } from 'react';
 import apiHelper from '@/utils/api';
-import Header from '@/components/Table/TableHeader'
-import TableFooter from '@/components/Table/TableFooter'
-import AccountTypeModal from '@/components/Modal/AccountTypeAddModal';
+import Header from '@/components/Table/TableHeader';
+import TableFooter from '@/components/Table/TableFooter';
+import AccountTypeModal from '@/components/Modal/AccountTypeModal';
 import DeletePopUp from '@/components/PopUp/DeletePopUp';
 import accountType from '@/services/accounType';
 
 const AccountType = () => {
   const [accountTypes, setAccountTypes] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [page, setPage] = useState(1)
-  const [limit, setLimit] = useState(10)
-  const [total, setTotal] = useState(0)
-  const [totalPage, setTotalPage] = useState(0)
-  const [search, setSearch] = useState('')
-  const [from, setFrom] = useState(1)
-  const [to, setTo] = useState(10)
-
-  useEffect(() => {
-    getAccountTypes({ page: currentPage, limit, search })
-    console.log(search);
-  }, [search, currentPage, page, limit])
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [total, setTotal] = useState(0);
+  const [totalPage, setTotalPage] = useState(0);
+  const [search, setSearch] = useState('');
+  const [from, setFrom] = useState(1);
+  const [to, setTo] = useState(10);
 
 
   async function getAccountTypes({ page, limit, search }: any) {
     if (search === '') {
-      search = null
+      search = null;
     }
 
     const result = await apiHelper.getAllAccountTypesWithPagination({ page, per_page: limit, name: search });
@@ -42,24 +37,32 @@ const AccountType = () => {
 
   }
 
+  useEffect(() => {
+    getAccountTypes({ page: currentPage, limit, search });
+    console.log(search);
+  }, [search, currentPage, page, limit]);
+
+
+ 
+
   function onChangePage(e: any) {
-    setCurrentPage(e)
+    setCurrentPage(e);
   }
 
   function onSearch(q: any) {
-    setSearch(q)
-    setCurrentPage(1)
-    setPage(1)
+    setSearch(q);
+    setCurrentPage(1);
+    setPage(1);
   }
 
   function onChangeLimit(e: any) {
-    setLimit(e)
-    setCurrentPage(1)
-    setPage(1)
+    setLimit(e);
+    setCurrentPage(1);
+    setPage(1);
   }
 
   function onProcessSuccess() {
-    getAccountTypes({ page: currentPage, limit, search })
+    getAccountTypes({ page: currentPage, limit, search });
   }
 
   async function onDelete(id: any) {
@@ -67,9 +70,9 @@ const AccountType = () => {
       .then((result) => {
         const { status } = result;
         if (status) {
-          getAccountTypes({ page: currentPage, limit, search })
+          getAccountTypes({ page: currentPage, limit, search });
         }
-      })
+      });
   }
 
   return (
@@ -128,7 +131,7 @@ const AccountType = () => {
                             </div>
                           </td>
                         </tr>
-                      )
+                      ),
                     )
                     }
                   </tbody>
@@ -146,7 +149,7 @@ const AccountType = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AccountType
+export default AccountType;

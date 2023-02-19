@@ -1,10 +1,10 @@
-import ReactPaginate from 'react-paginate'
+import ReactPaginate from 'react-paginate';
 
-const TableFooter = ({from, to , total, totalPage, changePage}: any) => {
+const TableFooter = ({ from, to, total, totalPage, changePage }: any) => {
 
   function setChangePageValue({ selected }: any) {
-    changePage(selected + 1)
-    console.log(selected)
+    changePage(selected + 1);
+    console.log(selected);
   }
 
   return (
@@ -27,7 +27,7 @@ const TableFooter = ({from, to , total, totalPage, changePage}: any) => {
         disabledLinkClassName={'disabled'}
       />
     </div>
-  )
-}
+  );
+};
 
-export default TableFooter
+export default TableFooter;

@@ -1,13 +1,13 @@
-import React from 'react'
-import { Inter } from '@next/font/google'
-import Header from '../Header/Header'
-import Footer from '../Footer/Footer'
+import React from 'react';
+import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
 import { Layout, Space } from 'antd';
 import Head from 'next/head';
+// import { Inter } from '@next/font/google';
 
-const inter = Inter({ subsets: ['latin'] })
+// const inter = Inter({ subsets: ['latin'] });
 
-const Main = ({children}: any) => {
+const Main = ({ children }: any) => {
   return (
     <>
       <Head>
@@ -27,7 +27,7 @@ const Main = ({children}: any) => {
         </Layout>
       </Space>
     </>
-  )
-}
+  );
+};
 
-export default Main
+export default Main;

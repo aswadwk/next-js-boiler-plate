@@ -1,53 +1,53 @@
-import { hideLoading, showLoading } from 'react-redux-loading-bar'
-import { AppDispatch } from '..'
-import api from '../../utils/api'
+import { hideLoading, showLoading } from 'react-redux-loading-bar';
+import { AppDispatch } from '..';
+import api from '../../utils/api';
 
 const ActionType = {
   SET_AUTH_USER: 'SET_AUTH_USER',
-  UNSET_AUTH_USER: 'UNSET_AUTH_USER'
-}
+  UNSET_AUTH_USER: 'UNSET_AUTH_USER',
+};
 
-function setAuthUserActionCreator (authUser: any | null): any {
+function setAuthUserActionCreator(authUser: any | null): any {
   return {
     type: ActionType.SET_AUTH_USER,
     payload: {
-      authUser
-    }
-  }
+      authUser,
+    },
+  };
 }
 
-function unsetAuthUserActionCreator (): object {
+function unsetAuthUserActionCreator(): object {
   return {
     type: ActionType.UNSET_AUTH_USER,
     payload: {
-      authUser: null
-    }
-  }
+      authUser: null,
+    },
+  };
 }
 
-function asyncSetAuthUser ({ email, password }: any): any {
+function asyncSetAuthUser({ email, password }: any): any {
   return async (dispatch: AppDispatch) => {
-    dispatch(showLoading())
+    dispatch(showLoading());
     try {
-      console.log('login')
-      const token = await api.login({ email, password })
-      api.putAccessToken(token)
-      const authUser = await api.getOwnProfile()
+      console.log('login');
+      const token = await api.login({ email, password });
+      api.putAccessToken(token);
+      const authUser = await api.getOwnProfile();
 
-      dispatch(setAuthUserActionCreator(authUser))
+      dispatch(setAuthUserActionCreator(authUser));
     } catch (error: any) {
-      alert(error)
+      alert(error);
     }
 
-    dispatch(hideLoading())
-  }
+    dispatch(hideLoading());
+  };
 }
 
-function asyncUnSetAuthUser () {
+function asyncUnSetAuthUser() {
   return (dispatch: any) => {
-    dispatch(unsetAuthUserActionCreator())
-    api.putAccessToken('')
-  }
+    dispatch(unsetAuthUserActionCreator());
+    api.putAccessToken('');
+  };
 }
 
 export {
@@ -55,5 +55,5 @@ export {
   setAuthUserActionCreator,
   unsetAuthUserActionCreator,
   asyncSetAuthUser,
-  asyncUnSetAuthUser
-}
+  asyncUnSetAuthUser,
+};

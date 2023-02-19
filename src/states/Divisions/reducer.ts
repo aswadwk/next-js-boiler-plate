@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/indent */
-import { ActionType } from './action'
+import { ActionType } from './action';
 
-function divisionReducer (divisions = [], action: any = {}): any {
+function divisionReducer(divisions = [], action: any = {}): any {
   switch (action.type) {
   case ActionType.RECEIVE_DIVISIONS:
-    return action.payload.divisions
+    return action.payload.divisions;
   case ActionType.ADD_DIVIOSION:
-    return [action.payload.divisions, ...divisions]
+    return [action.payload.divisions, ...divisions];
   default:
-    return divisions
+    return divisions;
   }
 }
 
-export default divisionReducer
+export default divisionReducer;

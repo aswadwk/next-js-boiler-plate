@@ -1,6 +1,4 @@
-import React from 'react'
-import { Button } from 'antd'
-import AccountTypeModal from '../Modal/AccountTypeAddModal'
+import React from 'react';
 
 const PageHeader = (props: any) => {
   return (
@@ -21,7 +19,7 @@ const PageHeader = (props: any) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PageHeader
+export default PageHeader;

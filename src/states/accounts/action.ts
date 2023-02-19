@@ -1,58 +1,58 @@
-import api from '@/utils/api'
-import { hideLoading, showLoading } from 'react-redux-loading-bar'
-import { AppDispatch } from '..'
+import api from '@/utils/api';
+import { hideLoading, showLoading } from 'react-redux-loading-bar';
+import { AppDispatch } from '..';
 
 const ActionType = {
   RECEIVE_ACCOUNTS: 'RECEIVE_ACCOUNTS',
-  ADD_ACCOUNT: 'ADD_ACCOUNT'
-}
+  ADD_ACCOUNT: 'ADD_ACCOUNT',
+};
 
-function receiveAccountsActionCreator (accounts: []): any {
+function receiveAccountsActionCreator(accounts: []): any {
   return {
     type: ActionType.RECEIVE_ACCOUNTS,
     payload: {
-      accounts
-    }
-  }
+      accounts,
+    },
+  };
 }
 
-function addAccountsActionCreator (accountType: any): any {
-  console.log(accountType)
+function addAccountsActionCreator(accountType: any): any {
+  console.log(accountType);
   return {
     type: ActionType.ADD_ACCOUNT,
     payload: {
-      accountType
-    }
-  }
+      accountType,
+    },
+  };
 }
 
-function asyncReceiveAccounts (): any {
+function asyncReceiveAccounts(): any {
   return async (dispatch: AppDispatch) => {
-    dispatch(showLoading())
+    dispatch(showLoading());
     try {
-      const accounts = await api.getAllAccounts()
-      dispatch(receiveAccountsActionCreator(accounts))
+      const accounts = await api.getAllAccounts();
+      dispatch(receiveAccountsActionCreator(accounts));
     } catch (error: any) {
-      alert(error.message)
+      alert(error.message);
     }
 
-    dispatch(hideLoading())
-  }
+    dispatch(hideLoading());
+  };
 }
 
-function asyncAddAccount ({ code, name, account_type_id }: any): any {
+function asyncAddAccount({ code, name, account_type_id }: any): any {
   return async (dispatch: AppDispatch) => {
-    dispatch(showLoading())
+    dispatch(showLoading());
     try {
-      const accounts = await api.addAccounts({ code, name, account_type_id })
+      const accounts = await api.addAccounts({ code, name, account_type_id });
 
-      dispatch(addAccountsActionCreator(accounts))
+      dispatch(addAccountsActionCreator(accounts));
     } catch (error: any) {
-      alert(error.message)
+      alert(error.message);
     }
 
-    dispatch(hideLoading())
-  }
+    dispatch(hideLoading());
+  };
 }
 
 export {
@@ -60,5 +60,5 @@ export {
   asyncReceiveAccounts,
   receiveAccountsActionCreator,
   asyncAddAccount,
-  addAccountsActionCreator
-}
+  addAccountsActionCreator,
+};
