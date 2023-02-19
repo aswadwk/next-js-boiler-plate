@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.0.1",
     "@next/font": "13.1.6",
     "@reduxjs/toolkit": "^1.9.2",
     "@types/node": "18.11.18",
@@ -25,5 +26,10 @@
     "react-redux": "^8.0.5",
     "react-redux-loading-bar": "^5.0.4",
     "typescript": "4.9.5"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.52.0",
+    "@typescript-eslint/parser": "^5.52.0",
+    "eslint-config-airbnb-typescript": "^17.0.0"
   }
 }

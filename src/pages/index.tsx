@@ -1,33 +1,8 @@
-import Head from 'next/head'
-import { Inter } from '@next/font/google'
-import PageHeader from '@/components/Header/PageHeader'
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-import { asyncIsPreloadProcess } from '@/states/isPreload/action';
-import { useRouter } from 'next/router';
+import Head from 'next/head';
+// import { Inter } from '@next/font/google';
+import PageHeader from '@/components/Header/PageHeader';
 
 export default function Home() {
-  const router = useRouter()
-  const {
-    authUser= null,
-    isPreload = false,
-  } = useSelector((states: any) => states);
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(asyncIsPreloadProcess());
-  }, [dispatch]);
-
-  if (isPreload) {
-    return null;
-  }
-
-  if(!isPreload && authUser===null){
-    router.push('/auth/signin')
-  }
-
   return (
     <>
       <Head>
@@ -38,7 +13,9 @@ export default function Home() {
       </Head>
       <div className="page-wrapper">
         <div className="container-fluid">
-          <PageHeader />
+          <PageHeader title='Dashboard'>
+            <></>
+          </PageHeader>
         </div>
         <div className="page-body">
           <div className="container-fluid">
@@ -160,5 +137,5 @@ export default function Home() {
         </div>
       </div>
     </>
-  )
+  );
 }

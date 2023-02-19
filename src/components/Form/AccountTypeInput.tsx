@@ -1,31 +1,23 @@
-import api from '@/utils/api';
-import { Button, Form, Input, Radio, Select } from 'antd'
+import { Button, Form, Input, Select } from 'antd';
 import type { FormInstance } from 'antd/es/form';
-import React from 'react'
+import React from 'react';
 
 const { Option } = Select;
 
-const AccountTypeInput = ({ onProcessSuccess, onOk }: any) => {
+const AccountTypeInput = ({ onProcessSuccess, onSubmitAccountType }: any) => {
   const formRef = React.useRef<FormInstance>(null);
-
-  console.log(onProcessSuccess)
-  async function handleSubmitAccountType(values: any) {
-    console.log('Received values of form: ', values);
-    const result = await api.addAccountType({
-      code: values.code, name: values.name, positionNormal: values.positionNormal
-    })
-
-    // get account types
-    onProcessSuccess();
-    onReset();
-    onOk();
-    console.log(result)
-  }
 
   const onReset = () => {
     formRef.current?.resetFields();
   };
 
+  console.log(onProcessSuccess);
+  async function handleSubmitAccountType(values: any) {
+
+    onSubmitAccountType(values);
+    onReset();
+  }
+  
   const [form] = Form.useForm();
 
   return (
@@ -59,10 +51,12 @@ const AccountTypeInput = ({ onProcessSuccess, onOk }: any) => {
 
 
       <Form.Item>
-        <Button htmlType='submit' type="primary">Submit</Button>
+        <Button
+          htmlType='submit' 
+          type="primary">Submit</Button>
       </Form.Item>
     </Form>
-  )
-}
+  );
+};
 
-export default AccountTypeInput
+export default AccountTypeInput;

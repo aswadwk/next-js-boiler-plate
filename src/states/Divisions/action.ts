@@ -1,58 +1,58 @@
-import api from '@/utils/api'
-import { hideLoading, showLoading } from 'react-redux-loading-bar'
-import { AppDispatch } from '..'
+import api from '@/utils/api';
+import { hideLoading, showLoading } from 'react-redux-loading-bar';
+import { AppDispatch } from '..';
 
 const ActionType = {
   RECEIVE_DIVISIONS: 'RECEIVE_DIVISIONS',
-  ADD_DIVIOSION: 'ADD_DIVIOSION'
-}
+  ADD_DIVIOSION: 'ADD_DIVIOSION',
+};
 
-function receiveDivisionsActionCreator (divisions: []): any {
+function receiveDivisionsActionCreator(divisions: []): any {
   return {
     type: ActionType.RECEIVE_DIVISIONS,
     payload: {
-      divisions
-    }
-  }
+      divisions,
+    },
+  };
 }
 
-function addDivisionActionCreator (divisions: any): any {
-  console.log(divisions)
+function addDivisionActionCreator(divisions: any): any {
+  console.log(divisions);
   return {
     type: ActionType.ADD_DIVIOSION,
     payload: {
-      divisions
-    }
-  }
+      divisions,
+    },
+  };
 }
 
-function asyncReceiveDivisions (): any {
+function asyncReceiveDivisions(): any {
   return async (dispatch: AppDispatch) => {
-    dispatch(showLoading())
+    dispatch(showLoading());
     try {
-      const divisions = await api.getAllDivisions()
-      dispatch(receiveDivisionsActionCreator(divisions))
+      const divisions = await api.getAllDivisions();
+      dispatch(receiveDivisionsActionCreator(divisions));
     } catch (error: any) {
-      alert(error.message)
+      alert(error.message);
     }
 
-    dispatch(hideLoading())
-  }
+    dispatch(hideLoading());
+  };
 }
 
-function asyncAddDivision ({ name, code, description }: any): any {
+function asyncAddDivision({ name, code, description }: any): any {
   return async (dispatch: AppDispatch) => {
-    dispatch(showLoading())
+    dispatch(showLoading());
     try {
-      const divisions = await api.addDivision({ name, code, description })
+      const divisions = await api.addDivision({ name, code, description });
 
-      dispatch(addDivisionActionCreator(divisions))
+      dispatch(addDivisionActionCreator(divisions));
     } catch (error: any) {
-      alert(error.message)
+      alert(error.message);
     }
 
-    dispatch(hideLoading())
-  }
+    dispatch(hideLoading());
+  };
 }
 
 export {
@@ -60,5 +60,5 @@ export {
   receiveDivisionsActionCreator,
   addDivisionActionCreator,
   asyncReceiveDivisions,
-  asyncAddDivision
-}
+  asyncAddDivision,
+};

@@ -1,8 +1,11 @@
-import React from 'react'
-import { Button } from 'antd'
-import AccountTypeModal from '../Modal/AccountTypeAddModal'
+import React from 'react';
 
-const PageHeader = (props: any) => {
+interface PageHeaderProps {
+  children: React.ReactNode;
+  title: string;
+}
+
+const PageHeader = ({ children, title }: PageHeaderProps) => {
   return (
     <div className="page-header d-print-none">
       <div className="row align-items-center">
@@ -11,17 +14,17 @@ const PageHeader = (props: any) => {
             Overview
           </div>
           <h2 className="page-title">
-            Fluid layout
+            {title}
           </h2>
         </div>
         <div className="col-auto ms-auto d-print-none">
           <div className="btn-list">
-            {props.children}
+            {children}
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PageHeader
+export default PageHeader;

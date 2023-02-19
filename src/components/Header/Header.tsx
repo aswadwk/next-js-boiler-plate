@@ -1,6 +1,6 @@
-import Link from 'next/link'
-import React from 'react'
-import Navbar from './Navbar'
+import Link from 'next/link';
+import React from 'react';
+import Navbar from './Navbar';
 
 const Header = () => {
   return (
@@ -58,7 +58,7 @@ const Header = () => {
       </header>
       <Navbar />
     </>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

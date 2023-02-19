@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Select } from 'antd';
-import { useState } from 'react';
 
 interface objectOptionInterface {
     id: string,
@@ -11,11 +11,11 @@ interface props {
     options: Array<any>
 }
 
-const SelectSearch = ({onChangeAccount,options}: props) => {
+const SelectSearch = ({ onChangeAccount, options }: props) => {
   const transformedArray = options.map((obj: objectOptionInterface) => {
     return {
       value: obj.id,
-      label: obj.name
+      label: obj.name,
     };
   });
 
@@ -37,7 +37,7 @@ const SelectSearch = ({onChangeAccount,options}: props) => {
       }
       options={transformedArray}
     />
-  )
-}
+  );
+};
 
-export default SelectSearch
+export default SelectSearch;
