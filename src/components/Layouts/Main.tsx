@@ -3,9 +3,12 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import { Layout, Space } from 'antd';
 import Head from 'next/head';
+import CheckAuth from './CheckAuth';
 // import { Inter } from '@next/font/google';
 
 // const inter = Inter({ subsets: ['latin'] });
+
+
 
 const Main = ({ children }: any) => {
   return (
@@ -17,15 +20,17 @@ const Main = ({ children }: any) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {/* <Space direction="vertical" style={{ width: '100%' }} size={[0, 48]}> */}
-      <Space direction="vertical" style={{ width: '100%' }} size={[0, 0]}>
-        <Layout>
-          <div className="wrapper">
-            <Header />
-            {children}
-            <Footer />
-          </div>
-        </Layout>
-      </Space>
+      <CheckAuth>
+        <Space direction="vertical" style={{ width: '100%' }} size={[0, 0]}>
+          <Layout>
+            <div className="wrapper">
+              <Header />
+              {children}
+              <Footer />
+            </div>
+          </Layout>
+        </Space>
+      </CheckAuth>
     </>
   );
 };

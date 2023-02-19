@@ -38,9 +38,7 @@ const Signin = () => {
     apiHelper.putAccessToken(data.access_token);
 
     router.push('/');
-
   };
-
 
   return (
     <div className="page page-center">
