@@ -73,7 +73,9 @@ const Signin = () => {
               <Button block
                 type="primary" htmlType='submit' 
                 icon={<LoginOutlined />}
-              >Login</Button>
+              >
+                Login
+              </Button>
             </Form>
           </div>
         </div>
