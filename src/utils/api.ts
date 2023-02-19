@@ -179,17 +179,7 @@ const api = (() => {
       })
     })
 
-    const responseJson = await response.json()
-
-    const { status, message } = responseJson
-
-    if (status !== true) {
-      throw new Error(message)
-    }
-
-    const { data: accountType } = responseJson
-
-    return accountType
+    return await response.json()
   }
 
   async function addAccounts ({ code, name, account_type_id }: any): Promise<any> {

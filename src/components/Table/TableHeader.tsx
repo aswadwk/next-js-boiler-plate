@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 const TableHeader = ({ onSearch, onItemPerPage }: any) => {
+  console.log(onSearch);
   const [search, setSearch] = useState('')
   const [itemPerPage, setItemPerPage] = useState(10)
 
@@ -37,7 +38,8 @@ const TableHeader = ({ onSearch, onItemPerPage }: any) => {
             <input 
               type="text" 
               className="form-control form-control-sm" 
-              aria-label="Search invoice" 
+              aria-label="Search invoice"
+              placeholder='Search...' 
               value={search}
               onChange={(e) => setSearchValue(e)}
             />

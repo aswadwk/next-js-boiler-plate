@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import apiHelper from '@/utils/api';
 import Header from '@/components/Table/TableHeader'
 import TableFooter from '@/components/Table/TableFooter'
+import AccountTypeModal from '@/components/Modal/AccountTypeAddModal';
 
 const AccountType = () => {
   const [accountTypes, setAccountTypes] = useState([]);
@@ -31,10 +32,10 @@ const AccountType = () => {
     const { data, status } = result;
     if (status) {
       setAccountTypes(data.data);
-      setTotalPage(data.last_page);
-      setTotal(data.total);
-      setFrom(data.from);
-      setTo(data.to);
+      setTotalPage(data.last_page ?? 0);
+      setTotal(data.total ?? 0);
+      setFrom(data.from ?? 0);
+      setTo(data.to ?? 0);
     }
 
   }
@@ -55,14 +56,16 @@ const AccountType = () => {
     setPage(1)
   }
 
-  if (accountTypes.length === 0) {
-    return null
+  function onProcessSuccess() {
+    getAccountTypes({ page: currentPage, limit, search })
   }
 
   return (
     <div className="page-wrapper">
       <div className="container-fluid">
-        <PageHeader />
+        <PageHeader>
+          <AccountTypeModal onProcessSuccess={onProcessSuccess} type='accountType' />
+        </PageHeader>
         <div className="page-body">
           <div className="container-fluid">
             <div className="col-12 col-md-8">
@@ -85,23 +88,33 @@ const AccountType = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {accountTypes.map((accountType: any, index: number) => (
-                      <tr key={accountType.id}>
-                        <td>{index + 1 + (currentPage - 1) * limit}</td>
-                        <td>{accountType.code}</td>
-                        <td>{accountType.name}</td>
-                        <td>{accountType.position_normal}</td>
-                        <td>{accountType.created_by?.name}</td>
-                        <td>{accountType.description}</td>
-                        <td>{accountType.description}</td>
-                        <td>
-                          <div className='d-flex justify-content-between gap-2'>
-                            <a className='text-danger' href="#">Delete</a>
-                            <a href="#">Edit</a>
-                          </div>
-                        </td>
-                      </tr>
-                    ))
+                    {accountTypes.length === 0 &&
+                      (
+                        <tr>
+                          <td colSpan={8} className="text-center">Data tidak ditemukan</td>
+                        </tr>
+                      )
+                    }
+
+                    {accountTypes.map((accountType: any, index: number) =>
+                      (
+                        <tr key={accountType.id}>
+                          <td>{index + 1 + (currentPage - 1) * limit}</td>
+                          <td>{accountType.code}</td>
+                          <td>{accountType.name}</td>
+                          <td>{accountType.position_normal}</td>
+                          <td>{accountType.created_by?.name}</td>
+                          <td>{accountType.description}</td>
+                          <td>{accountType.description}</td>
+                          <td>
+                            <div className='d-flex justify-content-between gap-2'>
+                              <a className='text-danger' href="#">Delete</a>
+                              <a href="#">Edit</a>
+                            </div>
+                          </td>
+                        </tr>
+                      )
+                    )
                     }
                   </tbody>
                 </table>
