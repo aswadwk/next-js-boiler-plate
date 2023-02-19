@@ -42,9 +42,6 @@ const AccountType = () => {
     console.log(search);
   }, [search, currentPage, page, limit]);
 
-
- 
-
   function onChangePage(e: any) {
     setCurrentPage(e);
   }
@@ -78,7 +75,7 @@ const AccountType = () => {
   return (
     <div className="page-wrapper">
       <div className="container-fluid">
-        <PageHeader>
+        <PageHeader title="Account Type">
           <AccountTypeModal onProcessSuccess={onProcessSuccess} type='accountType' />
         </PageHeader>
         <div className="page-body">

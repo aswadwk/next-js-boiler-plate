@@ -26,7 +26,7 @@ const AccountTypeInput = ({ onProcessSuccess, onOk }: any) => {
     console.log(result);
   }
 
-  
+
 
   const [form] = Form.useForm();
 
@@ -61,7 +61,9 @@ const AccountTypeInput = ({ onProcessSuccess, onOk }: any) => {
 
 
       <Form.Item>
-        <Button htmlType='submit' type="primary">Submit</Button>
+        <Button
+          htmlType='submit' 
+          type="primary">Submit</Button>
       </Form.Item>
     </Form>
   );
