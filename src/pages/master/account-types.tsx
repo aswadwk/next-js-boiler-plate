@@ -4,6 +4,8 @@ import apiHelper from '@/utils/api';
 import Header from '@/components/Table/TableHeader'
 import TableFooter from '@/components/Table/TableFooter'
 import AccountTypeModal from '@/components/Modal/AccountTypeAddModal';
+import DeletePopUp from '@/components/PopUp/DeletePopUp';
+import accountType from '@/services/accounType';
 
 const AccountType = () => {
   const [accountTypes, setAccountTypes] = useState([]);
@@ -60,6 +62,16 @@ const AccountType = () => {
     getAccountTypes({ page: currentPage, limit, search })
   }
 
+  async function onDelete(id: any) {
+    await accountType.deleteAccountType(id)
+      .then((result) => {
+        const { status } = result;
+        if (status) {
+          getAccountTypes({ page: currentPage, limit, search })
+        }
+      })
+  }
+
   return (
     <div className="page-wrapper">
       <div className="container-fluid">
@@ -108,7 +120,10 @@ const AccountType = () => {
                           <td>{accountType.description}</td>
                           <td>
                             <div className='d-flex justify-content-between gap-2'>
-                              <a className='text-danger' href="#">Delete</a>
+                              <DeletePopUp
+                                text="Yakin akan menghapus ?"
+                                description="Delete Tipe Akun"
+                                onDelete={() => onDelete(accountType.id)} />
                               <a href="#">Edit</a>
                             </div>
                           </td>
