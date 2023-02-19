@@ -1,11 +1,10 @@
-import api from '@/utils/api';
 import { Button, Form, Input, Select } from 'antd';
 import type { FormInstance } from 'antd/es/form';
 import React from 'react';
 
 const { Option } = Select;
 
-const AccountTypeInput = ({ onProcessSuccess, onOk }: any) => {
+const AccountTypeInput = ({ onProcessSuccess, onSubmitAccountType }: any) => {
   const formRef = React.useRef<FormInstance>(null);
 
   const onReset = () => {
@@ -14,20 +13,11 @@ const AccountTypeInput = ({ onProcessSuccess, onOk }: any) => {
 
   console.log(onProcessSuccess);
   async function handleSubmitAccountType(values: any) {
-    console.log('Received values of form: ', values);
-    const result = await api.addAccountType({
-      code: values.code, name: values.name, positionNormal: values.positionNormal,
-    });
 
-    // get account types
-    onProcessSuccess();
+    onSubmitAccountType(values);
     onReset();
-    onOk();
-    console.log(result);
   }
-
-
-
+  
   const [form] = Form.useForm();
 
   return (
