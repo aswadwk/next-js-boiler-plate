@@ -4,7 +4,6 @@ const TableFooter = ({ from, to, total, totalPage, changePage }: any) => {
 
   function setChangePageValue({ selected }: any) {
     changePage(selected + 1);
-    console.log(selected);
   }
 
   return (

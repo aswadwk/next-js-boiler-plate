@@ -18,11 +18,9 @@ const Signin = () => {
 
     const result = await api.login({ email, password });
 
-    const { status, data, message } = result;
+    const { status, data } = result;
 
     if (!status) {
-
-      console.log(message);
       setError(true);
       return;
     }

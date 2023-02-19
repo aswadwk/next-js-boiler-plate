@@ -17,7 +17,6 @@ function receiveAccountTypesActionCreator(accountTypes: []): any {
 }
 
 function addAccountTypesActionCreator(accountType: any): any {
-  console.log(accountType);
   return {
     type: ActionType.ADD_ACCOUNT_TYPE,
     payload: {
