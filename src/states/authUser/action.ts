@@ -29,7 +29,6 @@ function asyncSetAuthUser({ email, password }: any): any {
   return async (dispatch: AppDispatch) => {
     dispatch(showLoading());
     try {
-      console.log('login');
       const token = await api.login({ email, password });
       api.putAccessToken(token);
       const authUser = await api.getOwnProfile();

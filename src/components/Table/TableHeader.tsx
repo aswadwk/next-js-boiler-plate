@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 const TableHeader = ({ onSearch, onItemPerPage }: any) => {
-  console.log(onSearch);
   const [search, setSearch] = useState('');
   const [itemPerPage, setItemPerPage] = useState(10);
 

@@ -17,7 +17,6 @@ function receiveDivisionsActionCreator(divisions: []): any {
 }
 
 function addDivisionActionCreator(divisions: any): any {
-  console.log(divisions);
   return {
     type: ActionType.ADD_DIVIOSION,
     payload: {

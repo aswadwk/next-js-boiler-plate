@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import apiHelper from '@/utils/api';
 import Header from '@/components/Table/TableHeader';
 import TableFooter from '@/components/Table/TableFooter';
-import AccountTypeModal from '@/components/Modal/AccountTypeModal';
-import DeletePopUp from '@/components/PopUp/DeletePopUp';
 import accountType from '@/services/accounType';
+import AccountTypeModalNew from '@/components/Modal/AccountTypeModalNew';
+import DeleteConfirmationModal from '@/components/Modal/DeleteConfirmationModal';
 
 const AccountType = () => {
   const [accountTypes, setAccountTypes] = useState([]);
@@ -39,7 +39,6 @@ const AccountType = () => {
 
   useEffect(() => {
     getAccountTypes({ page: currentPage, limit, search });
-    console.log(search);
   }, [search, currentPage, page, limit]);
 
   function onChangePage(e: any) {
@@ -76,7 +75,7 @@ const AccountType = () => {
     <div className="page-wrapper">
       <div className="container-fluid">
         <PageHeader title="Account Type">
-          <AccountTypeModal onProcessSuccess={onProcessSuccess} type='accountType' />
+          <AccountTypeModalNew onProcessSuccess={onProcessSuccess} />
         </PageHeader>
         <div className="page-body">
           <div className="container-fluid">
@@ -120,10 +119,15 @@ const AccountType = () => {
                           <td>{accountType.description}</td>
                           <td>
                             <div className='d-flex justify-content-between gap-2'>
-                              <DeletePopUp
+                              {/* <DeletePopUp
                                 text="Yakin akan menghapus ?"
                                 description="Delete Tipe Akun"
-                                onDelete={() => onDelete(accountType.id)} />
+                                onDelete={() => onDelete(accountType.id)} /> */}
+                              <DeleteConfirmationModal 
+                                text="Yakin akan menghapus ?"
+                                description="Delete Tipe Akun"
+                                onDelete={() => onDelete(accountType.id)}
+                              />
                               <a href="#">Edit</a>
                             </div>
                           </td>

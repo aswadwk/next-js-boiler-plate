@@ -1,16 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import React from 'react';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
-import { Layout, Space } from 'antd';
 import Head from 'next/head';
 import CheckAuth from './CheckAuth';
 // import { Inter } from '@next/font/google';
 
 // const inter = Inter({ subsets: ['latin'] });
 
-
-
 const Main = ({ children }: any) => {
+ 
   return (
     <>
       <Head>
@@ -19,17 +18,12 @@ const Main = ({ children }: any) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {/* <Space direction="vertical" style={{ width: '100%' }} size={[0, 48]}> */}
       <CheckAuth>
-        <Space direction="vertical" style={{ width: '100%' }} size={[0, 0]}>
-          <Layout>
-            <div className="wrapper">
-              <Header />
-              {children}
-              <Footer />
-            </div>
-          </Layout>
-        </Space>
+        <div className="wrapper">
+          <Header />
+          {children}
+          <Footer />
+        </div>
       </CheckAuth>
     </>
   );
