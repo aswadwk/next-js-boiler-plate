@@ -1,6 +1,6 @@
+import { BASE_URL } from '@/constants/api';
+
 const api = (() => {
-  // const BASE_URL = 'https://forum-api.dicoding.dev/v1'
-  const BASE_URL = 'http://127.0.0.1:8000/api/v1/';
 
   function putAccessToken(accessToken: string): any {
     localStorage.setItem('accessToken', accessToken);
