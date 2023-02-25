@@ -1,11 +1,10 @@
 import PageHeader from '@/components/Header/PageHeader';
 import React, { useEffect, useState } from 'react';
-import apiHelper from '@/utils/api';
 import Header from '@/components/Table/TableHeader';
 import TableFooter from '@/components/Table/TableFooter';
-import accountType from '@/services/accounType';
 import AccountTypeModalNew from '@/components/Modal/AccountTypeModalNew';
 import DeleteConfirmationModal from '@/components/Modal/DeleteConfirmationModal';
+import accountTypeService from '@/services/accounType';
 
 const AccountType = () => {
   const [accountTypes, setAccountTypes] = useState([]);
@@ -24,7 +23,7 @@ const AccountType = () => {
       search = null;
     }
 
-    const result = await apiHelper.getAllAccountTypesWithPagination({ page, per_page: limit, name: search });
+    const result = await accountTypeService.getAllAccountType({ page, per_page: limit, name: search });
 
     const { data, status } = result;
     if (status) {
@@ -61,8 +60,28 @@ const AccountType = () => {
     getAccountTypes({ page: currentPage, limit, search });
   }
 
+  function modalClose() {
+    const modalElement = document.getElementById('modal-tipe-akun');
+    const modal = window.bootstrap.Modal.getInstance(modalElement as HTMLElement);
+
+    if (modal) {
+      modal.hide();
+    }
+  }
+
+  async function onSubmitAccountType({ code, name, positionNormal }: any) {
+    const { status } = await accountTypeService.addAccountType({
+      code, name, positionNormal,
+    });
+
+    if (status) {
+      onProcessSuccess();
+      modalClose();
+    }
+  }
+
   async function onDelete(id: any) {
-    await accountType.deleteAccountType(id)
+    await accountTypeService.deleteAccountType(id)
       .then((result) => {
         const { status } = result;
         if (status) {
@@ -75,7 +94,10 @@ const AccountType = () => {
     <div className="page-wrapper">
       <div className="container-fluid">
         <PageHeader title="Account Type">
-          <AccountTypeModalNew onProcessSuccess={onProcessSuccess} />
+          <AccountTypeModalNew
+            onSubmitAccountType={onSubmitAccountType}
+            modalClose={modalClose}
+          />
         </PageHeader>
         <div className="page-body">
           <div className="container-fluid">
@@ -119,11 +141,7 @@ const AccountType = () => {
                           <td>{accountType.description}</td>
                           <td>
                             <div className='d-flex justify-content-between gap-2'>
-                              {/* <DeletePopUp
-                                text="Yakin akan menghapus ?"
-                                description="Delete Tipe Akun"
-                                onDelete={() => onDelete(accountType.id)} /> */}
-                              <DeleteConfirmationModal 
+                              <DeleteConfirmationModal
                                 text="Yakin akan menghapus ?"
                                 description="Delete Tipe Akun"
                                 onDelete={() => onDelete(accountType.id)}

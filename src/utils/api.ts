@@ -2,10 +2,6 @@ import { BASE_URL } from '@/constants/api';
 
 const api = (() => {
 
-  function putAccessToken(accessToken: string): any {
-    localStorage.setItem('accessToken', accessToken);
-  }
-
   function getAccessToken(): string | null {
     return localStorage.getItem('accessToken');
   }
@@ -19,113 +15,6 @@ const api = (() => {
         Authorization: `Bearer ${getAccessToken()}`,
       },
     });
-  }
-
-  async function register({ name, email, password }: any): Promise<any> {
-    const response = await fetch(`${BASE_URL}/register`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name,
-        email,
-        password,
-      }),
-    });
-
-    const responseJson = await response.json();
-    const { status } = responseJson;
-
-    if (status !== true) {
-      console.log('utils ', responseJson);
-      return responseJson;
-    }
-
-    const { data: { user } } = responseJson;
-
-    return user;
-  }
-
-  async function login({ email, password }: any): Promise<any> {
-    const response = await fetch(`${BASE_URL}login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    });
-
-    return response.json();
-  }
-
-  
-
-  async function getOwnProfile(): Promise<any> {
-    const response = await fetchWithAuth(`${BASE_URL}me`);
-
-    const responseJson = await response.json();
-
-    const { status, message } = responseJson;
-
-    if (status !== true) {
-      throw new Error(message);
-    }
-
-    const { data: user } = responseJson;
-
-    return user;
-  }
-
-  async function getAllAccountTypes(): Promise<any> {
-    const response = await fetchWithAuth(`${BASE_URL}account-types`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    const responseJson = await response.json();
-
-    const { status, message } = responseJson;
-
-    if (status !== true) {
-      throw new Error(message);
-    }
-
-    const { data: accountTypes } = responseJson;
-
-    return accountTypes;
-  }
-
-  async function getAllAccountTypesWithPagination(params:any): Promise<any> {
-    console.log('params', params);
-    // delete item params when null
-    if (params.per_page === null) {
-      delete params.per_page;
-    }
-
-    if (params.page === null) {
-      delete params.page;
-    }
-
-    if (params.name === null) {
-      delete params.name;
-    }
-
-    const a = Object.keys(params).map((key) => `${key}=${params[key]}`).join('&');
-
-    const response = await fetchWithAuth(`${BASE_URL}account-types?${a}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    const responseJson = await response.json();
-
-    return responseJson;
   }
 
   async function getAllAccounts(): Promise<any> {
@@ -242,92 +131,7 @@ const api = (() => {
     return accountType;
   }
 
-  async function getAllUsers(): Promise<any> {
-    const response = await fetch(`${BASE_URL}/users`);
-
-    const responseJson = await response.json();
-
-    const { status, message } = responseJson;
-
-    if (status !== true) {
-      throw new Error(message);
-    }
-
-    const { data: { users } } = responseJson;
-
-    return users;
-  }
-
-  async function getAllThreads(): Promise<any> {
-    const response = await fetch(`${BASE_URL}/threads`);
-
-    const responseJson = await response.json();
-
-    const { status, message } = responseJson;
-
-    if (status !== true) {
-      throw new Error(message);
-    }
-
-    const { data: { threads } } = responseJson;
-
-    return threads;
-  }
-
-  async function createThread({ title, category, body }: any): Promise<any> {
-    const response = await fetchWithAuth(`${BASE_URL}/threads`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        title,
-        category,
-        body,
-      }),
-    });
-
-    const responseJson = await response.json();
-
-    const { status, message } = responseJson;
-
-    if (status !== true) {
-      throw new Error(message);
-    }
-
-    const { data: { thread } } = responseJson;
-
-    return thread;
-  }
-
-  async function getThreadDetail(id: string): Promise<any> {
-    const response = await fetch(`${BASE_URL}/threads/${id}`);
-
-    const responseJson = await response.json();
-
-    const { status, message } = responseJson;
-
-    if (status !== true) {
-      throw new Error(message);
-    }
-
-    const { data: { detailThread } } = responseJson;
-
-    return detailThread;
-  }
-
   return {
-    register,
-    login,
-    putAccessToken,
-    getAccessToken,
-    getOwnProfile,
-    getAllUsers,
-    getAllThreads,
-    createThread,
-    getThreadDetail,
-    getAllAccountTypes,
-    getAllAccountTypesWithPagination,
     addAccountType,
     getAllAccounts,
     addAccounts,

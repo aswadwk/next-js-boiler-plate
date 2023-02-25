@@ -1,6 +1,6 @@
+import authService from '@/services/auth';
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import { AppDispatch } from '..';
-import api from '../../utils/api';
 import { setAuthUserActionCreator } from '../authUser/action';
 
 const ActionType = {
@@ -21,7 +21,7 @@ function asyncIsPreloadProcess(): any {
     dispatch(showLoading());
     try {
       // preload process
-      const authUser = await api.getOwnProfile();
+      const authUser = await authService.getOwnProfile();
       dispatch(setAuthUserActionCreator(authUser));
     } catch (error) {
       dispatch(setAuthUserActionCreator(null));

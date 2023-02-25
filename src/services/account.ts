@@ -1,24 +1,26 @@
 import { BASE_URL } from '@/constants/api';
+import { removeNullOrUndefinedValues } from '@/utils';
+import authService from './auth';
 
 const accountService = (() => {
 
-  function getAccessToken(): string | null {
-    return localStorage.getItem('accessToken');
-  }
+  async function getAllAccount(params: any): Promise<any> {
+    // delete item params when null
+    if (params.per_page === null) {
+      delete params.per_page;
+    }
 
-  async function fetchWithAuth(url: any, options: any = {}): Promise<any> {
-    return fetch(url, {
-      ...options,
-      headers: {
-        ...options.headers,
-        Accept: 'application/json',
-        Authorization: `Bearer ${getAccessToken()}`,
-      },
-    });
-  }
+    if (params.page === null) {
+      delete params.page;
+    }
 
-  async function getAllAccounts(): Promise<any> {
-    const response = await fetchWithAuth(`${BASE_URL}accounts`, {
+    if (params.name === null) {
+      delete params.name;
+    }
+
+    const a = Object.keys(params).map((key) => `${key}=${params[key]}`).join('&');
+
+    const response = await authService.fetchWithAuth(`${BASE_URL}account-types?${a}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -30,18 +32,43 @@ const accountService = (() => {
   }
 
   async function addAccount({ name, code, positionNormal, description }: any): Promise<any> {
-    const response = await fetchWithAuth(`${BASE_URL}accounts`, {
+    const requestBody = removeNullOrUndefinedValues({
+      name,
+      code,
+      position_normal: positionNormal,
+      description,
+    });
+
+    const response = await authService.fetchWithAuth(`${BASE_URL}accounts`, {
       crossDomain: true,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        name,
-        code,
-        position_normal: positionNormal,
-        description,
-      }),
+      body: JSON.stringify(requestBody),
+    });
+
+    const result = response.json();
+
+    return result;
+  }
+
+  async function updateAccount({ id, name, code, accountTypeId, positionNormal, description }: any): Promise<any> {
+    const requestBody = removeNullOrUndefinedValues({
+      name,
+      code,
+      account_type_id: accountTypeId,
+      position_normal: positionNormal,
+      description,
+    });
+
+    const response = await authService.fetchWithAuth(`${BASE_URL}accounts/${id}`, {
+      crossDomain: true,
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestBody),
     });
 
     const result = response.json();
@@ -50,7 +77,7 @@ const accountService = (() => {
   }
 
   async function deleteAccount(id: number): Promise<any> {
-    const response = await fetchWithAuth(`${BASE_URL}accounts/${id}`, {
+    const response = await authService.fetchWithAuth(`${BASE_URL}accounts/${id}`, {
       crossDomain: true,
       method: 'DELETE',
       headers: {
@@ -64,9 +91,9 @@ const accountService = (() => {
   }
 
   return {
-    getAccessToken,
-    getAllAccounts,
+    getAllAccount,
     addAccount,
+    updateAccount,
     deleteAccount,
   };
 })();
