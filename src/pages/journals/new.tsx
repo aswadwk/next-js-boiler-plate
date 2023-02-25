@@ -1,112 +1,124 @@
 import React, { useEffect, useState } from 'react';
-import { MinusOutlined } from '@ant-design/icons';
-import type { DatePickerProps } from 'antd';
-import { DatePicker, Input, Button } from 'antd';
-import SelectSearch from '@/components/Elements/Select';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { asyncReceiveAccounts } from '@/states/accounts/action';
-import { useRouter } from 'next/router';
-import { asyncIsPreloadProcess } from '@/states/isPreload/action';
+import accountService from '@/services/account';
 
 const AddJournal = () => {
-  const router = useRouter();
-
-  const {
-    authUser = null,
-    isPreload = false,
-    accountsState = [],
-  }: any = useSelector((states) => states);
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(asyncIsPreloadProcess());
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(asyncReceiveAccounts());
-  }, [dispatch]);
-  
-  const [rows, setRows] = useState([
-    0, 1,
-  ]);
-  const [dateJournal, setDateJournal] = useState('');
-  const [account, setAccount] = useState([]);
-  const [debet, setDebet] = useState([,]);
-  const [credit, setCredit] = useState([0, 0]);
+  const [accounts, setAccounts] = useState([]);
   const [amountDebet, setAmountDebet] = useState(0);
+  const [amountCredit, setAmountCredit] = useState(0);
+  const [newJournal, setNewJournal] = useState([
+    {
+      date: '',
+      account: '',
+      debet: 0,
+      credit: 0,
+    },
+    {
+      date: '',
+      account: '',
+      debet: 0,
+      credit: 0,
+    },
+  ]);
+
+  async function getAccount() {
+    const result = await accountService.getAllAccounts();
+    const { data, status } = result;
+    if (status) {
+      setAccounts(data.data);
+    }
+  }
+
+  useEffect(() => {
+    getAccount();
+  }, []);
+
+  const addRow = () => {
+    const newRow = [...newJournal];
+    newRow.push({
+      date: newJournal[0].date,
+      account: '',
+      debet: 0,
+      credit: 0,
+    });
+
+    setNewJournal(newRow);
+  };
+
+  const deleteRow = (index: number) => {
+    if (newJournal.length > 2) {
+      console.log(index);
+
+      const newJournalCopy = [...newJournal];
+      newJournalCopy.splice(index, 1);
+      setNewJournal(newJournalCopy);
+    }
+  };
+
+  const handleChangeDate = (event: any, index: number) => {
+    const newDate: any = [...newJournal];
+    newDate[index].date = event.target.value;
+    setNewJournal(newDate);
+  };
+
+  const handleChangeAccount = (event: any, index: number) => {
+    const newAccount: any = [...newJournal];
+    newAccount[index].account = event.target.value;
+    setNewJournal(newAccount);
+  };
 
   const handleChangeDebet = (event: any, index: number) => {
     const reg = /^-?\d*(\.\d*)?$/;
 
-    const newDebet: any = [...debet];
-    if (reg.test(event.target.value)) {
-      newDebet[index] = event.target.value;
+    const newDebet: any = [...newJournal];
+
+    if (reg.test(event.target.value) || event.target.value === '' || event.target.value === '-') {
+      newDebet[index].debet = event.target.value;
     }
-    let amountC = 0;
-    newDebet.map((x: any)=>{
-      amountC += parseInt(x);
+
+    setNewJournal(newDebet);
+
+    const debet = newJournal.map((row: any) => {
+      return row.debet;
     });
-    setAmountDebet(amountC);
-    setDebet(newDebet);
+
+    const totalDebet = debet.reduce((a: any, b: any) => {
+      return Number(a) + Number(b);
+    }, 0);
+
+    setAmountDebet(totalDebet);
   };
 
   const handleChangeCredit = (event: any, index: number) => {
     const reg = /^-?\d*(\.\d*)?$/;
-    
-    const newCredit: any = [...credit];
+
+    if (newJournal[index].debet !== 0) {
+      alert('isi salah satu kolom debet atau kredit');
+      return;
+    }
+    const newCredit: any = [...newJournal];
+
     if (reg.test(event.target.value) || event.target.value === '' || event.target.value === '-') {
-      newCredit[index] = event.target.value;
+      newCredit[index].credit = event.target.value;
     }
-    setCredit(newCredit);
-  };
 
-  const addRow = () => {
-    setRows([...rows, Math.max(...rows) + 1]);
-  };
+    setNewJournal(newCredit);
 
-  const deleteRow = (index: number) => {
-    if (rows.length > 2) {
-      setAccount(account.filter((row, i) => i !== index));
-      setCredit(credit.filter((row, i) => i !== index));
-      setDebet(debet.filter((row, i) => i !== index));
-      setRows(rows.filter((row, i) => i !== index));
-    }
-  };
+    const credit = newJournal.map((row: any) => {
+      return row.credit;
+    });
 
-  const onChange: DatePickerProps['onChange'] = (date, dateString) => {
-    console.log(date, dateString);
-    setDateJournal(dateString);
-  };
+    const totalCredit = credit.reduce((a: any, b: any) => {
+      return Number(a) + Number(b);
+    }, 0);
 
-  const handleAccountChange = (value: any, index: number) => {
-    const newAccount: any = [...account];
-    newAccount[index] = value;
-    setAccount(newAccount);
-    if (Math.max(...rows) === index) {
-      addRow();
-    }
+    setAmountCredit(totalCredit);
   };
 
 
   function handleSubmit(event: any) {
     event.preventDefault();
-    console.log(debet);
-    console.log(credit);
-    console.log(dateJournal);
-    console.log(account);
+    console.log(newJournal);
   }
-
-
-  if (isPreload) {
-    return null;
-  }
-
-  if (!isPreload && authUser === null) {
-    router.push('/auth/signin');
-  }
-
 
 
   return (
@@ -127,8 +139,10 @@ const AddJournal = () => {
                   <div className="row row-cards">
                     <div className="mb-3 col-sm-4 col-md-2">
                       <label className="form-label required">Tanggal</label>
-                      <DatePicker 
-                        onChange={onChange} />
+                      <input
+                        onChange={(event: any) => handleChangeDate(event, 0)}
+                        className='form-control'
+                        type="date" />
                     </div>
                   </div>
                   <div className="form-label">Assertions</div>
@@ -143,30 +157,41 @@ const AddJournal = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {rows.map((row, index) => (
+                        {newJournal.map((row, index) => (
                           <tr key={index}>
                             <td>
-                              <SelectSearch
-                                onChangeAccount={(event: any) => handleAccountChange(event, index)}
-                                options={accountsState}/>
+                              <select className='form-select'
+                                required
+                                onChange={(event: any) => handleChangeAccount(event, index)}>
+                                <option value=''>Pilih Akun</option>
+                                {accounts.map((account: any) => (
+                                  <option key={account.id} value={account.id}>{account.name}</option>
+                                ))}
+                              </select>
                             </td>
                             <td>
-                              <Input 
-                                placeholder="000" 
-                                accept=''
-                                value={debet[index]} 
-                                onChange={event => handleChangeDebet(event, index)}
+                              <input
+                                className='form-control text-end'
+                                placeholder="000"
+                                accept='number'
+                                value={newJournal[index].debet}
+                                onChange={(event: any) => handleChangeDebet(event, index)}
+                              // onChange={event => setNewJournal({ ...newJournal, debet: event.target.value })}
                               />
                             </td>
                             <td>
-                              <Input 
-                                placeholder="000" 
-                                value={credit[index]} 
-                                onChange={event => handleChangeCredit(event, index)}
+                              <input
+                                className='form-control text-end'
+                                placeholder="000"
+                                value={newJournal[index].credit}
+                                onChange={(event: any) => handleChangeCredit(event, index)}
+                              // onChange={event => setNewJournal({ ...newJournal, credit: event.target.value })}
                               />
                             </td>
                             <td>
-                              <Button icon={<MinusOutlined />} onClick={() => deleteRow(index)}>{index}</Button>
+                              <button className='btn btn-outline-secondary' onClick={() => deleteRow(index)}>
+                                -
+                              </button>
                             </td>
                           </tr>
                         ))}
@@ -174,10 +199,10 @@ const AddJournal = () => {
                       <tfoot>
                         <tr>
                           <td>
-                            <Button type="dashed" onClick={addRow}>Tambah</Button>
+                            <button className='btn btn-outline-primary' onClick={addRow}>Tambah</button>
                           </td>
-                          <td className='text-end'>{amountDebet}</td>
-                          <td className='text-end'>90.000</td>
+                          <td className='text-end me-12'>{amountDebet}</td>
+                          <td className='text-end me-2'>{amountCredit}</td>
                           <td></td>
                         </tr>
                       </tfoot>
@@ -186,8 +211,14 @@ const AddJournal = () => {
                 </div>
                 <div className="card-footer text-end">
                   <div className='d-flex gap-2 justify-content-end'>
-                    <Button type="dashed">Reset</Button>
-                    <Button type="primary" htmlType='submit'>Simpan</Button>
+                    <button className='btn btn-secondary'>Reset</button>
+                    {
+                      amountDebet === amountCredit ? (
+                        <button className='btn btn-primary' type='submit'>Simpan</button>
+                      ) : (
+                        <button className='btn btn-primary' disabled>Simpan</button>
+                      )
+                    }
                   </div>
                 </div>
               </form>
