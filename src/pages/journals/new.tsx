@@ -3,6 +3,8 @@ import accountService from '@/services/account';
 
 const AddJournal = () => {
   const [accounts, setAccounts] = useState([]);
+  const [amountDebet, setAmountDebet] = useState(0);
+  const [amountCredit, setAmountCredit] = useState(0);
   const [newJournal, setNewJournal] = useState([
     {
       date: '',
@@ -33,7 +35,7 @@ const AddJournal = () => {
   const addRow = () => {
     const newRow = [...newJournal];
     newRow.push({
-      date: '',
+      date: newJournal[0].date,
       account: '',
       debet: 0,
       credit: 0,
@@ -68,16 +70,31 @@ const AddJournal = () => {
     const reg = /^-?\d*(\.\d*)?$/;
 
     const newDebet: any = [...newJournal];
-    if (reg.test(event.target.value)) {
+
+    if (reg.test(event.target.value) || event.target.value === '' || event.target.value === '-') {
       newDebet[index].debet = event.target.value;
     }
 
     setNewJournal(newDebet);
+
+    const debet = newJournal.map((row: any) => {
+      return row.debet;
+    });
+
+    const totalDebet = debet.reduce((a: any, b: any) => {
+      return Number(a) + Number(b);
+    }, 0);
+
+    setAmountDebet(totalDebet);
   };
 
   const handleChangeCredit = (event: any, index: number) => {
     const reg = /^-?\d*(\.\d*)?$/;
 
+    if (newJournal[index].debet !== 0) {
+      alert('isi salah satu kolom debet atau kredit');
+      return;
+    }
     const newCredit: any = [...newJournal];
 
     if (reg.test(event.target.value) || event.target.value === '' || event.target.value === '-') {
@@ -85,6 +102,16 @@ const AddJournal = () => {
     }
 
     setNewJournal(newCredit);
+
+    const credit = newJournal.map((row: any) => {
+      return row.credit;
+    });
+
+    const totalCredit = credit.reduce((a: any, b: any) => {
+      return Number(a) + Number(b);
+    }, 0);
+
+    setAmountCredit(totalCredit);
   };
 
 
@@ -133,7 +160,8 @@ const AddJournal = () => {
                         {newJournal.map((row, index) => (
                           <tr key={index}>
                             <td>
-                              <select className='form-select' 
+                              <select className='form-select'
+                                required
                                 onChange={(event: any) => handleChangeAccount(event, index)}>
                                 <option value=''>Pilih Akun</option>
                                 {accounts.map((account: any) => (
@@ -143,9 +171,9 @@ const AddJournal = () => {
                             </td>
                             <td>
                               <input
-                                className='form-control'
+                                className='form-control text-end'
                                 placeholder="000"
-                                accept=''
+                                accept='number'
                                 value={newJournal[index].debet}
                                 onChange={(event: any) => handleChangeDebet(event, index)}
                               // onChange={event => setNewJournal({ ...newJournal, debet: event.target.value })}
@@ -153,7 +181,7 @@ const AddJournal = () => {
                             </td>
                             <td>
                               <input
-                                className='form-control'
+                                className='form-control text-end'
                                 placeholder="000"
                                 value={newJournal[index].credit}
                                 onChange={(event: any) => handleChangeCredit(event, index)}
@@ -161,7 +189,9 @@ const AddJournal = () => {
                               />
                             </td>
                             <td>
-                              <button className='btn bt-secondary' onClick={() => deleteRow(index)}>{index}</button>
+                              <button className='btn btn-outline-secondary' onClick={() => deleteRow(index)}>
+                                -
+                              </button>
                             </td>
                           </tr>
                         ))}
@@ -169,10 +199,10 @@ const AddJournal = () => {
                       <tfoot>
                         <tr>
                           <td>
-                            <button className='btn btn-seconddary' onClick={addRow}>Tambah</button>
+                            <button className='btn btn-outline-primary' onClick={addRow}>Tambah</button>
                           </td>
-                          {/* <td className='text-end'>{amountDebet}</td> */}
-                          <td className='text-end'>90.000</td>
+                          <td className='text-end me-12'>{amountDebet}</td>
+                          <td className='text-end me-2'>{amountCredit}</td>
                           <td></td>
                         </tr>
                       </tfoot>
@@ -182,7 +212,13 @@ const AddJournal = () => {
                 <div className="card-footer text-end">
                   <div className='d-flex gap-2 justify-content-end'>
                     <button className='btn btn-secondary'>Reset</button>
-                    <button className='btn btn-primary' >Simpan</button>
+                    {
+                      amountDebet === amountCredit ? (
+                        <button className='btn btn-primary' type='submit'>Simpan</button>
+                      ) : (
+                        <button className='btn btn-primary' disabled>Simpan</button>
+                      )
+                    }
                   </div>
                 </div>
               </form>
