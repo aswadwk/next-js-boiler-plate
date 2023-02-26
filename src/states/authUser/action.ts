@@ -1,6 +1,6 @@
+import authService from '@/services/auth';
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import { AppDispatch } from '..';
-import api from '../../utils/api';
 
 const ActionType = {
   SET_AUTH_USER: 'SET_AUTH_USER',
@@ -29,9 +29,9 @@ function asyncSetAuthUser({ email, password }: any): any {
   return async (dispatch: AppDispatch) => {
     dispatch(showLoading());
     try {
-      const token = await api.login({ email, password });
-      api.putAccessToken(token);
-      const authUser = await api.getOwnProfile();
+      const token = await authService.login({ email, password });
+      authService.putAccessToken(token);
+      const authUser = await authService.getOwnProfile();
 
       dispatch(setAuthUserActionCreator(authUser));
     } catch (error: any) {
@@ -45,7 +45,7 @@ function asyncSetAuthUser({ email, password }: any): any {
 function asyncUnSetAuthUser() {
   return (dispatch: any) => {
     dispatch(unsetAuthUserActionCreator());
-    api.putAccessToken('');
+    authService.putAccessToken('');
   };
 }
 

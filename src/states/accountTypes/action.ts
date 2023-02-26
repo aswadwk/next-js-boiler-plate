@@ -1,4 +1,4 @@
-import api from '@/utils/api';
+import accountTypeService from '@/services/accounType';
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import { AppDispatch } from '..';
 
@@ -29,7 +29,7 @@ function asyncReceiveAccountTypes(): any {
   return async (dispatch: AppDispatch) => {
     dispatch(showLoading());
     try {
-      const accountTypes = await api.getAllAccountTypes();
+      const accountTypes = await accountTypeService.getAllAccountTypeWithoutPaginate();
       dispatch(receiveAccountTypesActionCreator(accountTypes));
     } catch (error: any) {
       alert(error.message);
@@ -43,7 +43,7 @@ function asyncAddAccountType({ name, code, positionNormal, description }: any): 
   return async (dispatch: AppDispatch) => {
     dispatch(showLoading());
     try {
-      const accountTypes = await api.addAccountType({ name, code, positionNormal, description });
+      const accountTypes = await accountTypeService.addAccountType({ name, code, positionNormal, description });
 
       dispatch(addAccountTypesActionCreator(accountTypes));
     } catch (error: any) {
