@@ -4,6 +4,18 @@ import authService from './auth';
 
 const accountService = (() => {
 
+  async function getAllAccountWithoutPaginate(): Promise<any> {
+    const response = await authService.fetchWithAuth(`${BASE_URL}accounts?all=1`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const responseJson = await response.json();
+
+    return responseJson;
+  }
+
   async function getAllAccount(params: any): Promise<any> {
     // delete item params when null
     if (params.per_page === null) {
@@ -31,10 +43,11 @@ const accountService = (() => {
     return responseJson;
   }
 
-  async function addAccount({ name, code, positionNormal, description }: any): Promise<any> {
+  async function addAccount({ name, code, accountTypeId, positionNormal, description }: any): Promise<any> {
     const requestBody = removeNullOrUndefinedValues({
       name,
       code,
+      account_type_id: accountTypeId,
       position_normal: positionNormal,
       description,
     });
@@ -91,6 +104,7 @@ const accountService = (() => {
   }
 
   return {
+    getAllAccountWithoutPaginate,
     getAllAccount,
     addAccount,
     updateAccount,

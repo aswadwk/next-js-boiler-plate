@@ -4,6 +4,18 @@ import authService from './auth';
 
 const accountTypeService = (() => {
 
+  async function getAllAccountTypeWithoutPaginate(): Promise<any> {
+    const response = await authService.fetchWithAuth(`${BASE_URL}account-types?all=1`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const responseJson = await response.json();
+
+    return responseJson;
+  }
+
   async function getAllAccountType(params:any): Promise<any> {
     // delete item params when null
     if (params.per_page === null) {
@@ -90,6 +102,7 @@ const accountTypeService = (() => {
   }
 
   return {
+    getAllAccountTypeWithoutPaginate,
     getAllAccountType,
     addAccountType,
     updateAccountType,
