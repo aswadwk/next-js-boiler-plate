@@ -4,6 +4,7 @@ import { AppDispatch } from '..';
 
 const ActionType = {
   SET_AUTH_USER: 'SET_AUTH_USER',
+  SET_AUTH_USER_ERROR: 'SET_AUTH_USER_ERROR',
   UNSET_AUTH_USER: 'UNSET_AUTH_USER',
 };
 
@@ -12,6 +13,15 @@ function setAuthUserActionCreator(authUser: any | null): any {
     type: ActionType.SET_AUTH_USER,
     payload: {
       authUser,
+    },
+  };
+}
+
+function setAuthUserErrorActionCreator(error: any): any {
+  return {
+    type: ActionType.SET_AUTH_USER_ERROR,
+    payload: {
+      error,
     },
   };
 }
@@ -31,11 +41,13 @@ function asyncSetAuthUser({ email, password }: any): any {
     try {
       const token = await authService.login({ email, password });
       authService.putAccessToken(token);
+     
       const authUser = await authService.getOwnProfile();
-
       dispatch(setAuthUserActionCreator(authUser));
     } catch (error: any) {
-      alert(error);
+
+      dispatch(setAuthUserErrorActionCreator(error.message));
+      throw new Error(error.message);
     }
 
     dispatch(hideLoading());
@@ -52,6 +64,7 @@ function asyncUnSetAuthUser() {
 export {
   ActionType,
   setAuthUserActionCreator,
+  setAuthUserErrorActionCreator,
   unsetAuthUserActionCreator,
   asyncSetAuthUser,
   asyncUnSetAuthUser,

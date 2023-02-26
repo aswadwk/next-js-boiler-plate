@@ -12,7 +12,7 @@ interface CheckAuthProps {
 const CheckAuth = ({ children }: CheckAuthProps) => {
   const router = useRouter();
   const {
-    authUser = null,
+    authUser = {},
     isPreload = false,
   } = useSelector((states: any) => states);
 
@@ -26,7 +26,7 @@ const CheckAuth = ({ children }: CheckAuthProps) => {
     return null;
   }
 
-  if (!isPreload && authUser === null) {
+  if (!isPreload && authUser.authUser === null) {
     router.push(AUTH_LOGIN);
   }
 

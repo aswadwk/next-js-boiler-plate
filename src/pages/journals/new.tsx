@@ -22,9 +22,10 @@ const AddJournal = () => {
 
   async function getAccount() {
     const result = await accountService.getAllAccountWithoutPaginate();
+
     const { data, status } = result;
     if (status) {
-      setAccounts(data.data);
+      setAccounts(data);
     }
   }
 

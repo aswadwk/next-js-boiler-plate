@@ -4,31 +4,33 @@ import Link from 'next/link';
 import React from 'react';
 import { useRouter } from 'next/router';
 import Danger from '@/components/Alerts/Danger';
-import authService from '@/services/auth';
 import Head from 'next/head';
+import { useDispatch } from 'react-redux';
+import { asyncSetAuthUser } from '@/states/authUser/action';
 
 const Signin = () => {
+
+  const dispacth = useDispatch();
+
   const router = useRouter();
   const [email, setEmail] = useInput('');
   const [password, setPassword] = useInput('');
   const [passwordVisible, setPasswordVisible] = React.useState(false);
-  const [error, setError] = React.useState(false);
+  const [error, setError] = React.useState('');
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsLoading(true);
 
-    const result = await authService.login({ email, password });
-
-    const { status, data } = result;
-
-    if (!status) {
-      setError(true);
-      return;
-    }
-
-    authService.putAccessToken(data.access_token);
-
-    router.push('/');
+    dispacth(asyncSetAuthUser({ email, password }))
+      .then(() => {
+        router.push('/');
+      })
+      .catch((error: any) => {
+        setError(error.message);
+        setIsLoading(false);
+      });
   };
 
   return (
@@ -44,7 +46,7 @@ const Signin = () => {
               <img src="/assets/icons/logo.svg" height="36" alt="" />
             </a>
           </div>
-          {error && <Danger title="Gagal" message="Email atau password salah" />}
+          {error && <Danger title="Gagal" message={error} />}
           <form
             onSubmit={onSubmit}
             className="card card-md"
@@ -60,7 +62,7 @@ const Signin = () => {
               </div>
               <div className="mb-2">
                 <label className="form-label">
-                Password
+                  Password
                   <span className="form-label-description">
                     <a href="./forgot-password.html">I forgot password</a>
                   </span>
@@ -81,7 +83,12 @@ const Signin = () => {
                 </div>
               </div>
               <div className="form-footer">
-                <button type="submit" className="btn btn-primary w-100">Masuk</button>
+                <button type="submit" className="btn btn-primary w-100 gap-2">
+                  {isLoading && (
+                    <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                  )}
+                  Masuk
+                </button>
               </div>
             </div>
           </form>

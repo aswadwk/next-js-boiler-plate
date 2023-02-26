@@ -22,6 +22,7 @@ function asyncIsPreloadProcess(): any {
     try {
       // preload process
       const authUser = await authService.getOwnProfile();
+
       dispatch(setAuthUserActionCreator(authUser));
     } catch (error) {
       dispatch(setAuthUserActionCreator(null));

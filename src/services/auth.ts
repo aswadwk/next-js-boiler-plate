@@ -40,7 +40,6 @@ const authService = (() => {
     const { status } = responseJson;
 
     if (status !== true) {
-      console.log('utils ', responseJson);
       return responseJson;
     }
 
@@ -61,7 +60,17 @@ const authService = (() => {
       }),
     });
 
-    return response.json();
+    const responseJson = await response.json();
+    const { status, message, data } = responseJson;
+
+    if (!status) {
+      throw new Error(message);
+    }
+
+    const { access_token: token } = data;
+
+    return token;
+
   }
 
   async function getOwnProfile(): Promise<any> {
@@ -71,7 +80,7 @@ const authService = (() => {
 
     const { status, message } = responseJson;
 
-    if (status !== true) {
+    if (!status) {
       throw new Error(message);
     }
 
