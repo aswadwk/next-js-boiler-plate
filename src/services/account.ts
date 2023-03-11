@@ -32,7 +32,7 @@ const accountService = (() => {
 
     const a = Object.keys(params).map((key) => `${key}=${params[key]}`).join('&');
 
-    const response = await authService.fetchWithAuth(`${BASE_URL}account-types?${a}`, {
+    const response = await authService.fetchWithAuth(`${BASE_URL}accounts?${a}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -44,6 +44,7 @@ const accountService = (() => {
   }
 
   async function addAccount({ name, code, accountTypeId, positionNormal, description }: any): Promise<any> {
+    console.log('addAccount', name, code, accountTypeId, positionNormal, description);
     const requestBody = removeNullOrUndefinedValues({
       name,
       code,
@@ -51,6 +52,8 @@ const accountService = (() => {
       position_normal: positionNormal,
       description,
     });
+
+    console.log('requestBody', requestBody);
 
     const response = await authService.fetchWithAuth(`${BASE_URL}accounts`, {
       crossDomain: true,
