@@ -5,6 +5,7 @@ import TableFooter from '@/components/Table/TableFooter';
 import AccountTypeModalNew from '@/components/Modal/AccountTypeModalNew';
 import DeleteConfirmationModal from '@/components/Modal/DeleteConfirmationModal';
 import accountTypeService from '@/services/accounType';
+import { dateForHuman } from '@/utils';
 
 const AccountType = () => {
   const [accountTypes, setAccountTypes] = useState([]);
@@ -138,7 +139,7 @@ const AccountType = () => {
                           <td>{accountType.position_normal}</td>
                           <td>{accountType.created_by?.name}</td>
                           <td>{accountType.description}</td>
-                          <td>{accountType.description}</td>
+                          <td>{dateForHuman(accountType.created_at)}</td>
                           <td>
                             <div className='d-flex justify-content-between gap-2'>
                               <DeleteConfirmationModal
