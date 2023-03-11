@@ -1,8 +1,9 @@
 export function removeNullOrUndefinedValues(obj: any): any {
+  console.log('removeNullOrUndefinedValues', obj);
   const newObj: any = {};
   
   for (const [key, value] of Object.entries(obj)) {
-    if (value === undefined && value === null && value === '') {
+    if (value !== undefined && value !== null && value !== '') {
       newObj[key] = value;
     }
   }
