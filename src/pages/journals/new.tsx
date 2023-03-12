@@ -11,12 +11,14 @@ const AddJournal = () => {
       account: '',
       debet: 0,
       credit: 0,
+      amount: 0,
     },
     {
       date: '',
       account: '',
       debet: 0,
       credit: 0,
+      amount: 0,
     },
   ]);
 
@@ -40,6 +42,7 @@ const AddJournal = () => {
       account: '',
       debet: 0,
       credit: 0,
+      amount: 0,
     });
 
     setNewJournal(newRow);
@@ -52,6 +55,27 @@ const AddJournal = () => {
       const newJournalCopy = [...newJournal];
       newJournalCopy.splice(index, 1);
       setNewJournal(newJournalCopy);
+
+      const debet = newJournal.map((row: any) => {
+        return row.debet;
+      });
+
+      const totalDebet = debet.reduce((a: any, b: any) => {
+        return Number(a) + Number(b);
+      });
+
+      setAmountDebet(totalDebet);
+
+      const credit = newJournal.map((row: any) => {
+
+        return row.credit;
+      });
+
+      const totalCredit = credit.reduce((a: any, b: any) => {
+        return Number(a) + Number(b);
+      });
+
+      setAmountCredit(totalCredit);
     }
   };
 
@@ -74,6 +98,9 @@ const AddJournal = () => {
 
     if (reg.test(event.target.value) || event.target.value === '' || event.target.value === '-') {
       newDebet[index].debet = event.target.value;
+      newDebet[index].credit = 0;
+      newDebet[index].type = 'D';
+      newDebet[index].amount = event.target.value;
     }
 
     setNewJournal(newDebet);
@@ -92,14 +119,13 @@ const AddJournal = () => {
   const handleChangeCredit = (event: any, index: number) => {
     const reg = /^-?\d*(\.\d*)?$/;
 
-    if (newJournal[index].debet !== 0) {
-      alert('isi salah satu kolom debet atau kredit');
-      return;
-    }
     const newCredit: any = [...newJournal];
 
     if (reg.test(event.target.value) || event.target.value === '' || event.target.value === '-') {
       newCredit[index].credit = event.target.value;
+      newCredit[index].debet = 0;
+      newCredit[index].type = 'C';
+      newCredit[index].amount = event.target.value;
     }
 
     setNewJournal(newCredit);
@@ -118,6 +144,9 @@ const AddJournal = () => {
 
   function handleSubmit(event: any) {
     event.preventDefault();
+
+
+
     console.log(newJournal);
   }
 
