@@ -3,6 +3,7 @@ import accountService from '@/services/account';
 import journalService from '@/services/journal';
 
 const AddJournal = () => {
+  const [isLoading, setIsLoading] = React.useState(false);
   const [accounts, setAccounts] = useState([]);
   const [amountDebet, setAmountDebet] = useState(0);
   const [amountCredit, setAmountCredit] = useState(0);
@@ -26,10 +27,29 @@ const AddJournal = () => {
 
   async function addJournal(journals: any) {
     const result = await journalService.add(journals);
+    setIsLoading(false);
 
     const { data, status } = result;
     if (status) {
       console.log(data);
+
+      // reset form
+      setNewJournal([
+        {
+          date: '',
+          account_id: '',
+          debet: 0,
+          credit: 0,
+          amount: 0,
+        },
+        {
+          date: '',
+          account_id: '',
+          debet: 0,
+          credit: 0,
+          amount: 0,
+        },
+      ]);
     }
   }
 
@@ -159,6 +179,7 @@ const AddJournal = () => {
 
   function handleSubmit(event: any) {
     event.preventDefault();
+    setIsLoading(true);
 
     //update date newJournal
     const newJournalCopy = [...newJournal];
@@ -200,7 +221,7 @@ const AddJournal = () => {
                   <div className="mb-3">
                     <label className="form-label">Keterangan</label>
                     <textarea
-                      placeholder='Masukkan keterangan' 
+                      placeholder='Masukkan keterangan'
                       className="form-control" rows={2} onChange={(event: any) => handleChangeDescription(event)}>
                       {description}
                     </textarea>
@@ -275,7 +296,12 @@ const AddJournal = () => {
                     <button className='btn btn-secondary'>Reset</button>
                     {
                       amountDebet === amountCredit ? (
-                        <button className='btn btn-primary' type='submit'>Simpan</button>
+                        <button className='btn btn-primary gap-2' type='submit'>
+                          {isLoading && (
+                            <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                          )}
+                          Simpan
+                        </button>
                       ) : (
                         <button className='btn btn-primary' disabled>Simpan</button>
                       )
