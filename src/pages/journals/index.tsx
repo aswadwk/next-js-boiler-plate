@@ -134,12 +134,12 @@ const Journal = () => {
                     (
                       <tr key={journal.id}>
                         <td>{index + 1 + (currentPage - 1) * limit}</td>
-                        <td>{journal.account.code}</td>
+                        <td>{journal.account?.code}</td>
                         <td>{dateFormatIndonesia(journal.created_at)}</td>
                         <td>{journal.description}</td>
                         <td>{journal.partner?.name}</td>
-                        <td>{journal.type === 'C' ? journal.account.name : '' }</td>
-                        <td>{journal.type === 'D' ? journal.account.name : '' }</td>
+                        <td>{journal.type === 'C' ? journal.account?.name : '' }</td>
+                        <td>{journal.type === 'D' ? journal.account?.name : '' }</td>
                         <td className='text-end'>{journal.type === 'C' ? journal.amount : '' }</td>
                         <td className='text-end'>{journal.type === 'D' ? journal.amount : '' }</td>
                       </tr>
