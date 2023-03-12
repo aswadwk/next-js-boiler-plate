@@ -1,26 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import accountService from '@/services/account';
+import journalService from '@/services/journal';
 
 const AddJournal = () => {
   const [accounts, setAccounts] = useState([]);
   const [amountDebet, setAmountDebet] = useState(0);
   const [amountCredit, setAmountCredit] = useState(0);
+  const [description, setDescription] = useState('');
   const [newJournal, setNewJournal] = useState([
     {
       date: '',
-      account: '',
+      account_id: '',
       debet: 0,
       credit: 0,
       amount: 0,
     },
     {
       date: '',
-      account: '',
+      account_id: '',
       debet: 0,
       credit: 0,
       amount: 0,
     },
   ]);
+
+  async function addJournal(journals: any) {
+    const result = await journalService.add(journals);
+
+    const { data, status } = result;
+    if (status) {
+      console.log(data);
+    }
+  }
 
   async function getAccount() {
     const result = await accountService.getAllAccountWithoutPaginate();
@@ -39,7 +50,7 @@ const AddJournal = () => {
     const newRow = [...newJournal];
     newRow.push({
       date: newJournal[0].date,
-      account: '',
+      account_id: '',
       debet: 0,
       credit: 0,
       amount: 0,
@@ -87,7 +98,7 @@ const AddJournal = () => {
 
   const handleChangeAccount = (event: any, index: number) => {
     const newAccount: any = [...newJournal];
-    newAccount[index].account = event.target.value;
+    newAccount[index].account_id = event.target.value;
     setNewJournal(newAccount);
   };
 
@@ -141,13 +152,22 @@ const AddJournal = () => {
     setAmountCredit(totalCredit);
   };
 
+  function handleChangeDescription(event: any) {
+    setDescription(event.target.value);
+  }
+
 
   function handleSubmit(event: any) {
     event.preventDefault();
 
+    //update date newJournal
+    const newJournalCopy = [...newJournal];
+    newJournalCopy.map((row: any) => {
+      row.date = newJournal[0].date;
+      row.description = description;
+    });
 
-
-    console.log(newJournal);
+    addJournal(newJournalCopy);
   }
 
 
@@ -162,7 +182,7 @@ const AddJournal = () => {
             <div className="card">
               <form onSubmit={handleSubmit}>
                 <div className="card-header">
-                  <h3 className="card-title">Form Jurnal</h3>
+                  <h3 className="card-title">Form Tambah Jurnal</h3>
                 </div>
                 <div className="card-body">
 
@@ -172,10 +192,21 @@ const AddJournal = () => {
                       <input
                         onChange={(event: any) => handleChangeDate(event, 0)}
                         className='form-control'
+                        required
                         type="date" />
                     </div>
                   </div>
-                  <div className="form-label">Assertions</div>
+
+                  <div className="mb-3">
+                    <label className="form-label">Keterangan</label>
+                    <textarea
+                      placeholder='Masukkan keterangan' 
+                      className="form-control" rows={2} onChange={(event: any) => handleChangeDescription(event)}>
+                      {description}
+                    </textarea>
+                  </div>
+
+                  {/* <div className="form-label">Assertions</div> */}
                   <div className="table-responsive">
                     <table className="table mb-0">
                       <thead>

@@ -1,11 +1,12 @@
 import PageHeader from '@/components/Header/PageHeader';
-import AddAccountModal from '@/components/Modal/AddAccountModal';
+// import AddAccountModal from '@/components/Modal/AddAccountModal';
 // import DeleteConfirmationModal from '@/components/Modal/DeleteConfirmationModal';
 import TableFooter from '@/components/Table/TableFooter';
 import TableHeader from '@/components/Table/TableHeader';
-import accountService from '@/services/account';
+// import accountService from '@/services/account';
 import journalService from '@/services/journal';
 import { dateFormatIndonesia } from '@/utils';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
 const Journal = () => {
@@ -58,30 +59,30 @@ const Journal = () => {
     setPage(1);
   }
 
-  function onProcessSuccess() {
-    getAccounts({ page: currentPage, limit, search });
-  }
+  // function onProcessSuccess() {
+  //   getAccounts({ page: currentPage, limit, search });
+  // }
 
-  function modalClose() {
-    const modalElement = document.getElementById('modal-tipe-akun');
-    const modal = window.bootstrap.Modal.getInstance(modalElement as HTMLElement);
+  // function modalClose() {
+  //   const modalElement = document.getElementById('modal-tipe-akun');
+  //   const modal = window.bootstrap.Modal.getInstance(modalElement as HTMLElement);
 
-    if (modal) {
-      modal.hide();
-    }
-  }
+  //   if (modal) {
+  //     modal.hide();
+  //   }
+  // }
 
-  async function onSubmitAccount({ code, name, accountTypeId }: any) {
-    console.log(code, name, accountTypeId);
-    const { status } = await accountService.addAccount({
-      code, name, accountTypeId,
-    });
+  // async function onSubmitAccount({ code, name, accountTypeId }: any) {
+  //   console.log(code, name, accountTypeId);
+  //   const { status } = await accountService.addAccount({
+  //     code, name, accountTypeId,
+  //   });
 
-    if (status) {
-      onProcessSuccess();
-      modalClose();
-    }
-  }
+  //   if (status) {
+  //     onProcessSuccess();
+  //     modalClose();
+  //   }
+  // }
 
   // async function onDelete(id: any) {
   //   await accountService.deleteAccount(id)
@@ -97,10 +98,9 @@ const Journal = () => {
     <div className="page-wrapper">
       <div className="container-fluid">
         <PageHeader title="Daftar Journal">
-          <AddAccountModal
-            onSubmit={onSubmitAccount}
-            modalClose={modalClose}
-          />
+          <Link className="btn btn-primary" href="/journals/new" >
+            Tambah Journal
+          </Link>
         </PageHeader>
         <div className="page-body">
           <div className="col-12">

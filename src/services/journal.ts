@@ -3,24 +3,25 @@ import { BASE_URL } from '@/constants/api';
 import authService from './auth';
 
 export interface JournalsInterface {
-    journals: Journal[];
+  journals: Journal[];
 }
 
 export interface Journal {
-    id?:         string;
-    date:        Date;
-    amount:      number;
-    account_id:  string;
-    description: string;
-    type:        string;
-    partner_id?: string;
-    device_id?:  string;
+  id?: string;
+  date: Date;
+  amount: number;
+  account_id: string;
+  description: string;
+  type: string;
+  partner_id?: string;
+  device_id?: string;
 }
 
 const journalService = (() => {
 
-  async function add(journals: JournalsInterface): Promise<any> {
+  async function add(journals: any): Promise<any> {
 
+    console.log('journals', journals);
     // const requestBody = removeNullOrUndefinedValues({
     //   name,
     //   code,
@@ -28,20 +29,22 @@ const journalService = (() => {
     //   position_normal: positionNormal,
     //   description,
     // });
-    
+
     // console.log('requestBody', requestBody);
-    
-    const response = await authService.fetchWithAuth(`${BASE_URL}accounts`, {
+
+    const response = await authService.fetchWithAuth(`${BASE_URL}journals`, {
       crossDomain: true,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: journals,
+      body: JSON.stringify({
+        'journals': journals,
+      }),
     });
-    
+
     const result = response.json();
-    
+
     return result;
   }
 

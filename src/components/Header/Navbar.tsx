@@ -64,7 +64,7 @@ const Navbar = () => {
                     Semua Transaksi
                   </Link>
                   <Link className="dropdown-item" href="/journals/new" >
-                    Journal
+                    Tambah Journal
                   </Link>
                 </div>
               </li>
